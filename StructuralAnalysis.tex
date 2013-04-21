@@ -21,6 +21,7 @@
 %	MarcoDespl:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % This command defines a 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\MarcoDespl}[3]{%
     \coordinate (p1) at (#1) {};
     \coordinate (p2) at ([shift={(#3,10em)}]p1) {};
@@ -50,7 +51,9 @@
 %	TMD:
 % Tuned Mass Damper
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% This command defines a Tuned Mass Damper system
+% This command defines a Tuned Mass Damper system with
+% an elastic spring
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\TMD}[2]{%
     \coordinate (p1) at (#1) ;
     \coordinate (p2) at ([shift={(0em,3em)}]p1) {};
@@ -75,7 +78,9 @@
 %	TMD:
 % Tuned Mass Damper with damping
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% This command defines a Tuned Mass Damper system
+% This command defines a Tuned Mass Damper system with 
+% a damper and an alastic spring.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\TMDAmor}[2]{%
     \coordinate (p1) at (#1) ;
     \coordinate (p2) at ([shift={(0em,3em)}]p1) {};
