@@ -24,6 +24,9 @@
 \setlength{\parindent}{1cm}
 \usepackage{tikz}
 \usepackage{subfig}
+%+++++++++++++++++++++++++++++++
+% Se importa la libreria
+%+++++++++++++++++++++++++++++++
 \usepackage{../StructuralAnalysis}
 
 \begin{document}
@@ -37,31 +40,50 @@
   \maketitle
 \end{titlepage}
 
+\lstdefinestyle{customasm}{
+  belowcaptionskip=1\baselineskip,
+  frame=single,
+  xleftmargin=\parindent,
+  language=tex,
+  basicstyle=\small\ttfamily,
+  commentstyle=\itshape\color{green!40!black},
+  keywordstyle=\bfseries\color{blue},
+  identifierstyle=\color{black},
+  stringstyle=\color{purple},
+  stepnumber=1,
+  tabsize=2,
+  breaklines=true,
+}
+\lstset{style=customasm, numbers=left, texcl=true}
+
+
 \chapter{Dibujos relacionados con el análisis estructural}
 \section{Dinámica}
-
-%+++++++++++++++++++++++++++++++
-% Se importa la libreria
-%+++++++++++++++++++++++++++++++
 
 \begin{figure}[!htp]
   \centering
   \begin{tikzpicture}[scale=1]
-%Segundo argumento de MarcoDespl para empotramientos
-%Tercer argumento de MarcoDespl para desplazamiento
+    %Segundo argumento de MarcoDespl para empotramientos
+    %Tercer argumento de MarcoDespl para desplazamiento
     \MarcoDespl{0em,0em}{1}{2em}
-% Segundo argumento de TMD es el desplazamiento
+    % Segundo argumento de TMD es el desplazamiento
     \TMDAmor{4em,10em}{-2}
-    \node at (3em,5em) {$ \displaystyle\frac{k_{j}}{2} $};
-    \node at (13em,5em) {$ \displaystyle\frac{k_{j}}{2} $};
-    \node at (9em,13.5em) {$m_{T}$};
-    \node at (13.5em,9.3em) {$m_{j}$};
-    \node at (5.0em,13.5em) {$k_{T}$};
-    \node at (3.0em,10.6em) {$c_{T}$};
   \end{tikzpicture}
   \qquad
   \label{fig:rigi2}
 \end{figure}
+
+\begin{lstlisting}[firstnumber=1]
+\begin{tikzpicture}[scale=1]
+  %Segundo argumento de MarcoDespl para empotramientos
+  %Tercer argumento de MarcoDespl para desplazamiento
+  \MarcoDespl{0em,0em}{1}{2em}
+  % Segundo argumento de TMD es el desplazamiento
+  \TMDAmor{4em,10em}{-2}
+\end{tikzpicture}
+
+\end{lstlisting}
+
 
 
 
