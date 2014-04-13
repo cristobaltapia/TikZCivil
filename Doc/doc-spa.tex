@@ -1,2 +1,71 @@
-% Esta es la documentación de los distintos comandos credos.
-% Se ponen ejemplos de cada uno.
+%        File: doc-spa.tex
+%     Created: dom abr 13 12:00  2014 C
+% Last Change: dom abr 13 12:00  2014 C
+%
+\documentclass[11pt,letterpaper,oneside]{book}
+\usepackage[left=3cm,right=2cm,top=1cm,bottom=1.5cm,includeheadfoot]{geometry}
+\usepackage[spanish]{babel}
+%\usepackage[latin1]{inputenc}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{listings}
+\usepackage{emp}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{rccol}
+\usepackage{verbatim}   % Comentarios multilinea
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{ifsym}
+\usepackage{float}
+\usepackage[font=small]{caption}
+\usepackage{subcaption}
+\setlength{\parindent}{1cm}
+\usepackage{tikz}
+\usepackage{subfig}
+\usepackage{../StructuralAnalysis}
+
+\begin{document}
+
+\begin{titlepage}
+  \title{Documentación para el uso de la librería tikzcivil}
+  \author{Cristóbal Tapia\\
+    \texttt{crtapia@gmail.com}
+  }
+  \date{\today}
+  \maketitle
+\end{titlepage}
+
+\chapter{Dibujos relacionados con el análisis estructural}
+\section{Dinámica}
+
+%+++++++++++++++++++++++++++++++
+% Se importa la libreria
+%+++++++++++++++++++++++++++++++
+
+\begin{figure}[!htp]
+  \centering
+  \begin{tikzpicture}[scale=1]
+%Segundo argumento de MarcoDespl para empotramientos
+%Tercer argumento de MarcoDespl para desplazamiento
+    \MarcoDespl{0em,0em}{1}{2em}
+% Segundo argumento de TMD es el desplazamiento
+    \TMDAmor{4em,10em}{-2}
+    \node at (3em,5em) {$ \displaystyle\frac{k_{j}}{2} $};
+    \node at (13em,5em) {$ \displaystyle\frac{k_{j}}{2} $};
+    \node at (9em,13.5em) {$m_{T}$};
+    \node at (13.5em,9.3em) {$m_{j}$};
+    \node at (5.0em,13.5em) {$k_{T}$};
+    \node at (3.0em,10.6em) {$c_{T}$};
+  \end{tikzpicture}
+  \qquad
+  \label{fig:rigi2}
+\end{figure}
+
+
+
+\chapter{Dibujos relacionados con la mecánica de suelos}
+\end{document}
+
+
