@@ -9,21 +9,19 @@
 \usepackage[utf8x]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
+\usepackage{subfig}
 \usepackage{listings}
 \usepackage{emp}
 \usepackage{graphicx}
 \usepackage{fancyhdr}
-\usepackage{rccol}
 \usepackage{verbatim}   % Comentarios multilinea
 \usepackage{tabularx}
 \usepackage{booktabs}
 \usepackage{ifsym}
 \usepackage{float}
 \usepackage[font=small]{caption}
-\usepackage{subcaption}
 \setlength{\parindent}{1cm}
 \usepackage{tikz}
-\usepackage{subfig}
 %+++++++++++++++++++++++++++++++
 % Se importa la libreria
 %+++++++++++++++++++++++++++++++
@@ -60,12 +58,13 @@
 \chapter{Dibujos relacionados con el análisis estructural}
 \section{Dinámica}
 
+\subsection{Marco desplazado con un TMD}
 \begin{figure}[!htp]
   \centering
   \begin{tikzpicture}[scale=1]
-    %Segundo argumento de MarcoDespl para empotramientos
-    %Tercer argumento de MarcoDespl para desplazamiento
-    \MarcoDespl{0em,0em}{1}{2em}
+    %Segundo argumento de FrameDispl para empotramientos
+    %Tercer argumento de FrameDispl para desplazamiento
+    \FrameDispl{0em,0em}{1}{2em}
     % Segundo argumento de TMD es el desplazamiento
     \TMDAmor{4em,10em}{-2}
   \end{tikzpicture}
@@ -75,16 +74,56 @@
 
 \begin{lstlisting}[firstnumber=1]
 \begin{tikzpicture}[scale=1]
-  %Segundo argumento de MarcoDespl para empotramientos
-  %Tercer argumento de MarcoDespl para desplazamiento
-  \MarcoDespl{0em,0em}{1}{2em}
+  % Segundo argumento de FrameDispl para empotramientos
+  % Tercer argumento de FrameDispl para desplazamiento
+  \FrameDispl{0em,0em}{1}{2em}
   % Segundo argumento de TMD es el desplazamiento
   \TMDAmor{4em,10em}{-2}
 \end{tikzpicture}
-
 \end{lstlisting}
 
+\subsection{Múltiples marcos apilados}
 
+\begin{figure}[!htp]
+  \centering
+  \subfloat[$u_{j}=1$, $u_{T}=0$]{%
+  \begin{tikzpicture}[scale=0.6]
+  % Segundo argumento de FrameDispl para empotramientos
+  % Tercer argumento de FrameDispl para desplazamiento
+    \FrameDispl{0em,0em}{1}{0em}
+    \FrameDispl{0em,10em}{0}{0em}
+    \FrameDispl{0em,20em}{0}{0em}
+  \end{tikzpicture}
+  }
+  \qquad
+  \subfloat[$u_{j}=1$, $u_{T}=0$]{%
+  \begin{tikzpicture}[scale=0.6]
+  % Segundo argumento de FrameDispl para empotramientos
+  % Tercer argumento de FrameDispl para desplazamiento
+    \FrameDispl{0em,0em}{1}{2em}
+    \FrameDispl{2em,10em}{0}{2em}
+    \FrameDispl{4em,20em}{0}{2em}
+  \end{tikzpicture}
+  }
+
+  \label{fig:rigi1}
+\end{figure}
+
+\begin{lstlisting}[firstnumber=1, title=Dibujo izquierdo]
+\begin{tikzpicture}[scale=0.6]
+  \FrameDispl{0em,0em}{1}{0em}
+  \FrameDispl{0em,10em}{0}{0em}
+  \FrameDispl{0em,20em}{0}{0em}
+\end{tikzpicture}
+\end{lstlisting}
+
+\begin{lstlisting}[firstnumber=1, title=Dibujo derecho]
+\begin{tikzpicture}[scale=0.6]
+  \FrameDispl{0em,0em}{1}{2em}
+  \FrameDispl{2em,10em}{0}{2em}
+  \FrameDispl{4em,20em}{0}{2em}
+\end{tikzpicture}
+\end{lstlisting}
 
 
 \chapter{Dibujos relacionados con la mecánica de suelos}
