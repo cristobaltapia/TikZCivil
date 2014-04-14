@@ -1,4 +1,8 @@
 %Here are defined all kind of drawing, that are useful for the Structural Analysis.
+\ProvidesPackage{StructuralAnalysis}[2014/04/13 StructuralAnalysis Package]
+\RequirePackage{tikz}
+\RequirePackage{xkeyval}
+
 \usetikzlibrary{calc,arrows,shapes,positioning,shadows,trees,patterns,decorations.pathmorphing,decorations.markings}
 \tikzset{
   stock/.style={draw=black,text width=10em,line width=0.1em,pattern = north east lines},
@@ -106,4 +110,4 @@
   \draw (p8) circle (0.5em);
 }
 
-
+\endinput
