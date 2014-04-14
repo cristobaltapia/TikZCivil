@@ -1,5 +1,6 @@
 %Here are defined all kind of drawing, that are useful for the Structural Analysis.
-\ProvidesPackage{StructuralAnalysis}[2014/04/13 StructuralAnalysis Package]
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tikzcivil}[2014/04/13 StructuralAnalysis Package]
 \RequirePackage{tikz}
 \RequirePackage{xkeyval}
 
@@ -10,9 +11,9 @@
   columna/.style={color=black, line width=0.1em},
   resorte/.style={color=black, line width=0.1em},
   flecha/.style={thick,<->},
-  damper/.style={thick,decoration={markings,  
+  damper/.style={thick,decoration={markings,
     mark connection node=dmp,
-    mark=at position 0.5 with 
+    mark=at position 0.5 with
     {
       \node (dmp) [thick,inner sep=0pt,transform shape,rotate=-90,minimum width=10pt,minimum height=3pt,draw=none] {};
       \draw [thick] ($(dmp.north east)+(2pt,0)$) -- (dmp.south east) -- (dmp.south west) -- ($(dmp.north west)+(2pt,0)$);
@@ -24,7 +25,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %	MarcoDespl:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% This command defines a 
+% This command defines a
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\FrameDispl}[3]{%
   \coordinate (p1) at (#1) {};
@@ -72,7 +73,7 @@
 
   \draw[columna, line width=0.3em] (p1) -- (p2);
   \pgfmathsetlengthmacro{\separacion}{(0.35+#2/9)*1em}
-  \draw[decoration={aspect=0.3, segment length=\separacion, amplitude=0.4em,coil},decorate] (p3) -- (p4); 
+  \draw[decoration={aspect=0.3, segment length=\separacion, amplitude=0.4em,coil},decorate] (p3) -- (p4);
   \filldraw[stock] (p5) rectangle (p6);
     %Dibujar las ruedas
   \draw (p7) circle (0.5em);
@@ -82,7 +83,7 @@
 %	TMD:
 % Tuned Mass Damper with damping
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% This command defines a Tuned Mass Damper system with 
+% This command defines a Tuned Mass Damper system with
 % a damper and an alastic spring.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\TMDAmor}[2]{%
@@ -103,11 +104,15 @@
   \draw[columna, line width=0.3em] (p1) -- (p2);
   \draw[damper, line width=0.1em] (p9) -- (p10);
   \pgfmathsetlengthmacro{\separacion}{(0.35+#2/9)*1em}
-  \draw[decoration={aspect=0.3, segment length=\separacion, amplitude=0.4em,coil},decorate] (p3) -- (p4); 
+  \draw[decoration={aspect=0.3, segment length=\separacion, amplitude=0.4em,coil},decorate] (p3) -- (p4);
   \filldraw[stock] (p5) rectangle (p6);
     %Dibujar las ruedas
   \draw (p7) circle (0.5em);
   \draw (p8) circle (0.5em);
 }
 
+\def\fam@data{initial} 
+\define@key{fam}{key}[default]{% 
+  \def\fam@data{#1}%
+}
 \endinput
