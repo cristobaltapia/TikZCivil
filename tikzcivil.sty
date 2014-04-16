@@ -83,11 +83,11 @@
   % The position of the spring varies with the presence or
   % absence of the damper
   \ifdamper
-    \coordinate (p3) at ([shift={(0em,3.3em)}]p1) {};
-    \coordinate (p4) at ([shift={({4.5em+\massDisplacement},3.3em)}]p1) {};
+    \coordinate (p3) at ([shift={(0em,3.0em)}]p1) {};
+    \coordinate (p4) at ([shift={({4.5em+\massDisplacement},3.0em)}]p1) {};
   \else
-    \coordinate (p3) at ([shift={(0em,2.5em)}]p1) {};
-    \coordinate (p4) at ([shift={({4.5em+\massDisplacement},2.5em)}]p1) {};
+    \coordinate (p3) at ([shift={(0em,2.2em)}]p1) {};
+    \coordinate (p4) at ([shift={({4.5em+\massDisplacement},2.2em)}]p1) {};
   \fi
   % Coordinates for the mass
   \coordinate (p5) at ([shift={({4.5em+\massDisplacement},3.5em)}]p1) {};
@@ -95,11 +95,11 @@
   % Coordinates for the wheels
   \coordinate (p7) at ([shift={({5.3em+\massDisplacement},0.5em)}]p1) {};
   \coordinate (p8) at ([shift={({7.7em+\massDisplacement},0.5em)}]p1) {};
-  % Coordinates for the damper
-  \coordinate (p9) at ([shift={(0em,1.7em)}]p1) {};
-  \coordinate (p10) at ([shift={({4.5em+\massDisplacement},1.7em)}]p1) {};
   % The wall will be drawn if requested
   \ifwall
+    % Coordinates for the damper
+    \coordinate (p9) at ([shift={(0em,1.6em)}]p1) {};
+    \coordinate (p10) at ([shift={({4.5em+\massDisplacement},1.6em)}]p1) {};
     \draw[columna, line width=0.3em] (p1) -- (p2);
   \fi
   % Damper is applied if requested
