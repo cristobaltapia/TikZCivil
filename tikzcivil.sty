@@ -4,6 +4,7 @@
 \RequirePackage{tikz}
 \RequirePackage{xkeyval}
 
+%Here are the tikz options that are going to be used in this package.
 \usetikzlibrary{calc,arrows,shapes,positioning,shadows,trees,patterns,decorations.pathmorphing,decorations.markings}
 \tikzset{
   stock/.style={draw=black,text width=10em,line width=0.1em,pattern = north east lines},
@@ -15,11 +16,102 @@
     mark connection node=dmp,
     mark=at position 0.5 with
     {
-      \node (dmp) [thick,inner sep=0pt,transform shape,rotate=-90,minimum width=10pt,minimum height=3pt,draw=none] {};
+      \node (dmp) [thick,inner sep=0pt,transform shape,rotate=-90,minimum width=15pt,minimum height=3pt,draw=none] {};
       \draw [thick] ($(dmp.north east)+(2pt,0)$) -- (dmp.south east) -- (dmp.south west) -- ($(dmp.north west)+(2pt,0)$);
       \draw [thick] ($(dmp.north)+(0,-3pt)$) -- ($(dmp.north)+(0,3pt)$);
     }
   }, decorate},
+}
+
+
+% Set up the keys.  Only the ones directly under /myparbox
+% can be accepted as options to the \myparbox macro.
+\pgfkeys{
+  /myparbox/.is family, /myparbox,
+ % Here are the options that a user can pass
+  default/.style = {
+    width = \textwidth, height = \baselineskip,
+    position = center, inner position = center
+  },
+  width/.estore in = \myparboxWidth,
+  height/.estore in = \myparboxHeight,
+  position/.style = {positions/#1/.get = \myparboxPosition},
+  inner position/.style = {positions/#1/.get = \myparboxInnerPos},
+ % Here is the dictionary for positions.
+  positions/.cd,
+  top/.initial = t,
+  center/.initial = c,
+  bottom/.initial = b,
+  stretch/.initial = s,
+}
+
+% We process the options first, then pass them to `\parbox` in the form of macros.
+\newcommand\myparbox[2][]{%
+  \pgfkeys{/myparbox, default, #1}%
+  \parbox[\myparboxPosition][\myparboxHeight]
+  [\myparboxInnerPos]{\myparboxWidth}{#2}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Definition of command \MassWithSpring:
+% Defines the drawing of a typical mass tied to a spring.
+% Optionally it can also have a damper.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% pgfkeys are defined first
+% Definition of 'if-keys'
+\newif\ifdamper
+\newif\ifwall
+
+\pgfkeys{
+  /civil/.is family, /civil,
+  with damper/.is if = damper,
+  with wall/.is if = wall,
+  defaultMass/.style = {
+    position = {0em,0em}, displacement = 0em,
+    with damper = false, with wall = true,
+  },
+  position/.estore in = \massPosition,
+  displacement/.estore in = \massDisplacement,
+}
+
+% Definition of the command to draw
+\newcommand\MassWithSpring[1][]{%
+  \pgfkeys{/civil, defaultMass, #1}%
+  \coordinate (p1) at (\massPosition) ;
+  \coordinate (p2) at ([shift={(0em,4em)}]p1) {};
+  % The position of the spring varies with the presence or
+  % absence of the damper
+  \ifdamper
+    \coordinate (p3) at ([shift={(0em,3.3em)}]p1) {};
+    \coordinate (p4) at ([shift={({4.5em+\massDisplacement},3.3em)}]p1) {};
+  \else
+    \coordinate (p3) at ([shift={(0em,2.5em)}]p1) {};
+    \coordinate (p4) at ([shift={({4.5em+\massDisplacement},2.5em)}]p1) {};
+  \fi
+  % Coordinates for the mass
+  \coordinate (p5) at ([shift={({4.5em+\massDisplacement},3.5em)}]p1) {};
+  \coordinate (p6) at ([shift={({8.5em+\massDisplacement},1.0em)}]p1) {};
+  % Coordinates for the wheels
+  \coordinate (p7) at ([shift={({5.3em+\massDisplacement},0.5em)}]p1) {};
+  \coordinate (p8) at ([shift={({7.7em+\massDisplacement},0.5em)}]p1) {};
+  % Coordinates for the damper
+  \coordinate (p9) at ([shift={(0em,1.7em)}]p1) {};
+  \coordinate (p10) at ([shift={({4.5em+\massDisplacement},1.7em)}]p1) {};
+  % The wall will be drawn if requested
+  \ifwall
+    \draw[columna, line width=0.3em] (p1) -- (p2);
+  \fi
+  % Damper is applied if requested
+  \ifdamper
+    \draw[damper, line width=0.1em] (p9) -- (p10);
+  \fi
+  \pgfmathsetlengthmacro{\separation}{(4.5+\massDisplacement/9)}
+  \draw[decoration={aspect=0.3, segment length=\separation, amplitude=0.5em,coil},decorate] (p3) -- (p4);
+  \filldraw[stock] (p5) rectangle (p6);
+  % Wheels are drawn
+  \draw (p7) circle (0.5em);
+  \draw (p8) circle (0.5em);
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -52,67 +144,5 @@
   \fi
 
 }
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%	TMD:
-% Tuned Mass Damper
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% This command defines a Tuned Mass Damper system with
-% an elastic spring
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\TMD}[2]{%
-  \coordinate (p1) at (#1) ;
-  \coordinate (p2) at ([shift={(0em,3em)}]p1) {};
-  \coordinate (p3) at ([shift={(0em,1.5em)}]p1) {};
-  \coordinate (p4) at ([shift={({3.5em+#2},1.5em)}]p1) {};
-    %Nodos para la masa
-  \coordinate (p5) at ([shift={({3.5em+#2},2.5em)}]p1) {};
-  \coordinate (p6) at ([shift={({6.5em+#2},1em)}]p1) {};
-    %Nodos para las ruedas
-  \coordinate (p7) at ([shift={({4.0em+#2},0.5em)}]p1) {};
-  \coordinate (p8) at ([shift={({6.0em+#2},0.5em)}]p1) {};
 
-  \draw[columna, line width=0.3em] (p1) -- (p2);
-  \pgfmathsetlengthmacro{\separacion}{(0.35+#2/9)*1em}
-  \draw[decoration={aspect=0.3, segment length=\separacion, amplitude=0.4em,coil},decorate] (p3) -- (p4);
-  \filldraw[stock] (p5) rectangle (p6);
-    %Dibujar las ruedas
-  \draw (p7) circle (0.5em);
-  \draw (p8) circle (0.5em);
-}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%	TMD:
-% Tuned Mass Damper with damping
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% This command defines a Tuned Mass Damper system with
-% a damper and an alastic spring.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\TMDAmor}[2]{%
-  \coordinate (p1) at (#1) ;
-  \coordinate (p2) at ([shift={(0em,3em)}]p1) {};
-  \coordinate (p3) at ([shift={(0em,2.3em)}]p1) {};
-  \coordinate (p4) at ([shift={({3.5em+#2em},2.3em)}]p1) {};
-    %Coordenadas para el amortiguamiento
-  \coordinate (p9) at ([shift={(0em,1.2em)}]p1) {};
-  \coordinate (p10) at ([shift={({3.5em+#2em},1.2em)}]p1) {};
-    %Nodos para la masa
-  \coordinate (p5) at ([shift={({3.5em+#2em},2.5em)}]p1) {};
-  \coordinate (p6) at ([shift={({6.5em+#2em},1em)}]p1) {};
-    %Nodos para las ruedas
-  \coordinate (p7) at ([shift={({4.0em+#2em},0.5em)}]p1) {};
-  \coordinate (p8) at ([shift={({6.0em+#2em},0.5em)}]p1) {};
-
-  \draw[columna, line width=0.3em] (p1) -- (p2);
-  \draw[damper, line width=0.1em] (p9) -- (p10);
-  \pgfmathsetlengthmacro{\separacion}{(0.35+#2/9)*1em}
-  \draw[decoration={aspect=0.3, segment length=\separacion, amplitude=0.4em,coil},decorate] (p3) -- (p4);
-  \filldraw[stock] (p5) rectangle (p6);
-    %Dibujar las ruedas
-  \draw (p7) circle (0.5em);
-  \draw (p8) circle (0.5em);
-}
-
-\def\fam@data{initial} 
-\define@key{fam}{key}[default]{% 
-  \def\fam@data{#1}%
-}
 \endinput

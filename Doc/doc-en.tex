@@ -1,10 +1,7 @@
-%        File: doc-spa.tex
-%     Created: dom abr 13 12:00  2014 C
-% Last Change: dom abr 13 12:00  2014 C
 %
 \documentclass[11pt,letterpaper,oneside]{book}
 \usepackage[left=3cm,right=2cm,top=1cm,bottom=1.5cm,includeheadfoot]{geometry}
-\usepackage[spanish]{babel}
+\usepackage[english]{babel}
 %\usepackage[latin1]{inputenc}
 \usepackage[utf8x]{inputenc}
 \usepackage[T1]{fontenc}
@@ -30,13 +27,15 @@
 \begin{document}
 
 \begin{titlepage}
-  \title{Documentación para el uso de la librería tikzcivil}
+  \title{Documentation for the use of the \emph{tikzcivil} package}
   \author{Cristóbal Tapia\\
     \texttt{crtapia@gmail.com}
   }
   \date{\today}
   \maketitle
 \end{titlepage}
+
+\tableofcontents
 
 \lstdefinestyle{customasm}{
   belowcaptionskip=1\baselineskip,
@@ -54,29 +53,46 @@
 }
 \lstset{style=customasm, numbers=left, texcl=true}
 
+\chapter{Drawing for the Structural Analysis}
+\section{Dynamic}
 
-\chapter{Dibujos relacionados con el análisis estructural}
-\section{Dinámica}
-
-\subsection{Marco desplazado con un TMD}
+\subsection{\texttt{\textbackslash MassWithSpring} command}
+This command draws a typical mass-spring system. It supports also an optional damper and displacement. The basic behavior of this command is shown in fig. \ref{fig:MassWithSpring}. \\
 \begin{figure}[!htp]
   \centering
   \begin{tikzpicture}[scale=1]
-    \MassWithSpring[with damper=true, position={0em,0}, displacement=0em]
-    \MassWithSpring[with damper=true, position={0em,-5em}, displacement=3em]
+    \MassWithSpring[]
   \end{tikzpicture}
-  \qquad
-  \label{fig:rigi2}
+  \caption{Mass-Spring system}
+  \label{fig:MassWithSpring}
 \end{figure}
 
 \begin{lstlisting}[firstnumber=1]
 \begin{tikzpicture}[scale=1]
-  \MassWithSpring[with damper=true, position={0em,0},
-                  displacement=0em]
-  \MassWithSpring[with damper=true, position={0em,-10em},
-                  displacement=3em]
+    \MassWithSpring[]
 \end{tikzpicture}
 \end{lstlisting}
+
+More interesting behaviours can be achieved using the optional key values, as shown in fig .\\
+\begin{figure}[!ht]
+  \centering
+  \begin{tikzpicture}[scale=1]
+    \MassWithSpring[displacement = 2em, with damper = true]
+    \MassWithSpring[displacement = -1em,  with wall = false, position = {10.5em,0em}]
+    \MassWithSpring[displacement = 3em,  with wall = false, position = {18.0em,0em}]
+  \end{tikzpicture}
+  \caption{More complex mass-spring system}
+  \label{fig:MassWithSpring2}
+\end{figure}
+
+\begin{lstlisting}[firstnumber=1]
+\begin{tikzpicture}[scale=1]
+    \MassWithSpring[displacement = 2em, with damper = true]
+    \MassWithSpring[displacement = -1em,  with wall = false, position = {10.5em,0em}]
+    \MassWithSpring[displacement = 3em,  with wall = false, position = {18.0em,0em}]
+\end{tikzpicture}
+\end{lstlisting}
+
 
 \subsection{Múltiples marcos apilados}
 
