@@ -50,6 +50,7 @@
   stepnumber=1,
   tabsize=2,
   breaklines=true,
+  size=10pt,
 }
 \lstset{style=customasm, numbers=left, texcl=true}
 
@@ -104,6 +105,13 @@ Thus command draws a frame with its mass concentrated above. It is a very common
   \caption{Using the \textbackslash Frame command with defaults options.}
   \label{fig:frame1}
 \end{figure}
+
+\begin{lstlisting}[firstnumber=1]
+\begin{tikzpicture}[scale=1]
+  \Frame[]
+\end{tikzpicture}
+\end{lstlisting}
+
 
 \begin{figure}[!ht]
   \centering
