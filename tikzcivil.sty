@@ -23,40 +23,11 @@
   }, decorate},
 }
 
-
-% Set up the keys.  Only the ones directly under /myparbox
-% can be accepted as options to the \myparbox macro.
-\pgfkeys{
-  /myparbox/.is family, /myparbox,
- % Here are the options that a user can pass
-  default/.style = {
-    width = \textwidth, height = \baselineskip,
-    position = center, inner position = center
-  },
-  width/.estore in = \myparboxWidth,
-  height/.estore in = \myparboxHeight,
-  position/.style = {positions/#1/.get = \myparboxPosition},
-  inner position/.style = {positions/#1/.get = \myparboxInnerPos},
- % Here is the dictionary for positions.
-  positions/.cd,
-  top/.initial = t,
-  center/.initial = c,
-  bottom/.initial = b,
-  stretch/.initial = s,
-}
-
-% We process the options first, then pass them to `\parbox` in the form of macros.
-\newcommand\myparbox[2][]{%
-  \pgfkeys{/myparbox, default, #1}%
-  \parbox[\myparboxPosition][\myparboxHeight]
-  [\myparboxInnerPos]{\myparboxWidth}{#2}
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Definition of command \MassWithSpring:
 % Defines the drawing of a typical mass tied to a spring.
 % Optionally it can also have a damper.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % pgfkeys are defined first
 % Definition of 'if-keys'
@@ -114,23 +85,39 @@
   \draw (p8) circle (0.5em);
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%	MarcoDespl:
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% This command defines a
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\FrameDispl}[3]{%
-  \coordinate (p1) at (#1) {};
-  \coordinate (p2) at ([shift={(#3,10em)}]p1) {};
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%	Frame
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This command defines a frame with a mass
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Deffinition of if-keys
+\newif\ifsupport
+
+\pgfkeys{
+  /civil/frame/.is family, /civil/frame,
+  with damper/.is if = damper,
+  with support/.is if = support,
+  defaultFrame/.style = {
+    position = {0em,0em}, displacement = 0em,
+    with damper = false, with support = true,
+  },
+  position/.estore in = \framePosition,
+  displacement/.estore in = \frameDisplacement,
+}
+
+\newcommand{\Frame}[1][]{%
+  \pgfkeys{/civil/frame, defaultFrame, #1}%
+  \coordinate (p1) at (\framePosition) {};
+  \coordinate (p2) at ([shift={(\frameDisplacement,10em)}]p1) {};
   \coordinate (p3) at ([shift={(10em,0em)}]p1) {};
-  \coordinate (p4) at ([shift={({10em+#3},10em)}]p1) {};
-  \coordinate (p121) at ([shift={({#3/7},3em)}]p1) {};
-  \coordinate (p122) at ([shift={({#3*6/7},7em)}]p1) {};
-  \coordinate (p341) at ([shift={({10em+#3/7},3em)}]p1) {};
-  \coordinate (p342) at ([shift={({10em+#3*6/7},7em)}]p1) {};
+  \coordinate (p4) at ([shift={({10em+\frameDisplacement},10em)}]p1) {};
+  \coordinate (p121) at ([shift={({\frameDisplacement/7},3em)}]p1) {};
+  \coordinate (p122) at ([shift={({\frameDisplacement*6/7},7em)}]p1) {};
+  \coordinate (p341) at ([shift={({10em+\frameDisplacement/7},3em)}]p1) {};
+  \coordinate (p342) at ([shift={({10em+\frameDisplacement*6/7},7em)}]p1) {};
   \draw[columna] plot [smooth, tension=0.8] coordinates{(p1) (p121) (p122) (p2)};
   \draw[columna] plot [smooth, tension=0.8] coordinates{(p3) (p341) (p342) (p4)};
-  \coordinate (p5) at ([shift={({10em+#3},9em)}]p1) {};
+  \coordinate (p5) at ([shift={({10em+\frameDisplacement},9em)}]p1) {};
     %\coordinate[stock] at (5em,10em) (#1) {};
   \filldraw[stock] (p2) rectangle (p5);
     %Definir coordenadas para los apoyos
@@ -138,9 +125,9 @@
   \coordinate (p6) at ([shift={(1.5em,-1em)}]p1) {};
   \coordinate (p7) at ([shift={(8.5em,0em)}]p1) {};
   \coordinate (p8) at ([shift={(11.5em,-1em)}]p1) {};
-  \ifnum #2 = 1 {%
+  \ifsupport
     \filldraw[empotrado] (p5) rectangle (p6);
-  \filldraw[empotrado] (p7) rectangle (p8);};
+    \filldraw[empotrado] (p7) rectangle (p8);
   \fi
 
 }

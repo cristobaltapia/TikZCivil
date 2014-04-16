@@ -94,27 +94,32 @@ More interesting behaviours can be achieved using the optional key values, as sh
 \end{lstlisting}
 
 
-\subsection{Múltiples marcos apilados}
+\subsection{\texttt{\textbackslash Frame command}}
+Thus command draws a frame with its mass concentrated above. It is a very common model to describe later a multi-story building in 2D. This command has many options, useful to change the displacement, position, use of supports, damper, among others. In the fig. \ref{fig:frame1} can be seen the normal output of the command without any options.\\
+\begin{figure}[!ht]
+  \centering
+  \begin{tikzpicture}[scale=1.0]
+    \Frame[]
+  \end{tikzpicture}
+  \caption{Using the \textbackslash Frame command with defaults options.}
+  \label{fig:frame1}
+\end{figure}
 
-\begin{figure}[!htp]
+\begin{figure}[!ht]
   \centering
   \subfloat[  ]{%
     \begin{tikzpicture}[scale=0.6]
-  % Segundo argumento de FrameDispl para empotramientos
-  % Tercer argumento de FrameDispl para desplazamiento
-      \FrameDispl{0em,0em}{1}{0em}
-      \FrameDispl{0em,10em}{0}{0em}
-      \FrameDispl{0em,20em}{0}{0em}
+      \Frame[position = {0em,0em}]
+      \Frame[position = {0em,10em}, with support = false]
+      \Frame[position = {0em,20em}, with support = false]
     \end{tikzpicture}
   }
   \qquad
   \subfloat[  ]{%
     \begin{tikzpicture}[scale=0.6]
-  % Segundo argumento de FrameDispl para empotramientos
-  % Tercer argumento de FrameDispl para desplazamiento
-      \FrameDispl{0em,0em}{1}{0.15em}
-      \FrameDispl{0.15em,10em}{0}{1.35em}
-      \FrameDispl{1.5em,20em}{0}{3.4em}
+      \Frame[position = {0em,0em}, displacement = 0.15em]
+      \Frame[position = {0.15em,10em}, with support = false, displacement = 1.35em]
+      \Frame[position = {1.5em,20em}, with support = false, displacement = 3.4em]
     \end{tikzpicture}
   }
 
@@ -123,17 +128,19 @@ More interesting behaviours can be achieved using the optional key values, as sh
 
 \begin{lstlisting}[firstnumber=1, title=Dibujo izquierdo]
 \begin{tikzpicture}[scale=0.6]
-  \FrameDispl{0em,0em}{1}{0em}
-  \FrameDispl{0em,10em}{0}{0em}
-  \FrameDispl{0em,20em}{0}{0em}
+  \Frame[position = {0em,0em}]
+  \Frame[position = {0em,10em}, with support = false]
+  \Frame[position = {0em,20em}, with support = false]
 \end{tikzpicture}
 \end{lstlisting}
 
 \begin{lstlisting}[firstnumber=1, title=Dibujo derecho]
 \begin{tikzpicture}[scale=0.6]
-  \FrameDispl{0em,0em}{1}{0.15em}
-  \FrameDispl{0.15em,10em}{0}{1.35em}
-  \FrameDispl{1.5em,20em}{0}{3.4em}
+  \Frame[position = {0em,0em}, displacement = 0.15em]
+  \Frame[position = {0.15em,10em}, with support = false,
+         displacement = 1.35em]
+  \Frame[position = {1.5em,20em}, with support = false,
+         displacement = 3.4em]
 \end{tikzpicture}
 \end{lstlisting}
 
