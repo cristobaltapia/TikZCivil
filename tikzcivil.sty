@@ -53,14 +53,14 @@
 \newcommand\Support[1][]{%
   \pgfkeys{/civil/supports, default, #1,}%
   % Initial position
-  \coordinate (p1) at (\supportPosition) ;
+  \coordinate (k1) at (\supportPosition) ;
   % If the type of the support is fixed
   \iffixed
     % Rotate if requested
     \pgftransformrotate{\supportAngle}
-    \coordinate (p2) at ([shift={(-\supportWidth/2,0cm)}]p1) {};
-    \coordinate (p3) at ([shift={(\supportWidth/2,-\supportWidth/3)}]p1) {};
-    \filldraw[soil style] (p2) rectangle (p3);
+    \coordinate (k2) at ([shift={(-\supportWidth/2,0cm)}]k1) {};
+    \coordinate (k3) at ([shift={(\supportWidth/2,-\supportWidth/3)}]k1) {};
+    \filldraw[soil style] (k2) rectangle (k3);
     \pgftransformrotate{-\supportAngle}
   \fi
   % If the type of the support is pinned
@@ -68,14 +68,14 @@
     % Rotate if requested
     \pgftransformrotate{\supportAngle}
     % Coordinates for the trianlge
-    \coordinate (p4) at ([shift={(-\supportWidth/2,-\supportWidth*2/3)}]p1) {};
-    \coordinate (p5) at ([shift={(\supportWidth/2,-\supportWidth*2/3)}]p1) {};
+    \coordinate (k4) at ([shift={(-\supportWidth/2,-\supportWidth*2/3)}]k1) {};
+    \coordinate (k5) at ([shift={(\supportWidth/2,-\supportWidth*2/3)}]k1) {};
     % Triangle is drawn
-    \draw (p1) -- (p4) -- (p5) -- (p1);
+    \draw (k1) -- (k4) -- (k5) -- (k1);
     % This are te coordinates for the lower-right point of the soil-rectangle
-    \coordinate (p6) at ([shift={(\supportWidth/2,-\supportWidth)}]p1) {};
+    \coordinate (k6) at ([shift={(\supportWidth/2,-\supportWidth)}]k1) {};
     % The rectangle for the soil is drawn
-    \filldraw[soil style] (p4) rectangle (p6);
+    \filldraw[soil style] (k4) rectangle (k6);
     \pgftransformrotate{-\supportAngle}
   \fi
   % If the type of the support is pinned and sliding
@@ -83,20 +83,20 @@
     % Rotate if requested
     \pgftransformrotate{\supportAngle}
     % Coordinates for the triangle
-    \coordinate (p4) at ([shift={(-\supportWidth/2,-\supportWidth*2/3)}]p1) {};
-    \coordinate (p5) at ([shift={(\supportWidth/2,-\supportWidth*2/3)}]p1) {};
+    \coordinate (k4) at ([shift={(-\supportWidth/2,-\supportWidth*2/3)}]k1) {};
+    \coordinate (k5) at ([shift={(\supportWidth/2,-\supportWidth*2/3)}]k1) {};
     % Trianlge is drawn
-    \draw (p1) -- (p4) -- (p5) -- (p1);
+    \draw (k1) -- (k4) -- (k5) -- (k1);
     % Wheels are drawn
-    \coordinate (p6) at ([shift={(0,-\supportWidth*2/3-\supportWidth/10)}]p1);
-    \coordinate (p7) at ([shift={(-\supportWidth*2/5,-\supportWidth*2/3-\supportWidth/10)}]p1);
-    \coordinate (p8) at ([shift={(\supportWidth*2/5,-\supportWidth*2/3-\supportWidth/10)}]p1);
-    \foreach \center in {{(p6)}, {(p7)}, {(p8)}} 
+    \coordinate (k6) at ([shift={(0,-\supportWidth*2/3-\supportWidth/10)}]k1);
+    \coordinate (k7) at ([shift={(-\supportWidth*2/5,-\supportWidth*2/3-\supportWidth/10)}]k1);
+    \coordinate (k8) at ([shift={(\supportWidth*2/5,-\supportWidth*2/3-\supportWidth/10)}]k1);
+    \foreach \center in {{(k6)}, {(k7)}, {(k8)}} 
       \draw \center circle (\supportWidth/10);
     % Coordinates for the soil under the wheels
-    \coordinate (p9) at ([shift={(0,-\supportWidth/5)}]p4);
-    \coordinate (p10) at ([shift={(0,-\supportWidth/5-\supportWidth/3)}]p5);
-    \filldraw[soil style = soil1] (p9) rectangle (p10);
+    \coordinate (k9) at ([shift={(0,-\supportWidth/5)}]k4);
+    \coordinate (k10) at ([shift={(0,-\supportWidth/5-\supportWidth/3)}]k5);
+    \filldraw[soil style = soil1] (k9) rectangle (k10);
     \pgftransformrotate{-\supportAngle}
   \fi
 }
@@ -176,13 +176,13 @@
   with damper/.is if = damper,
   with support/.is if = support,
   defaultFrame/.style = {
-    height = 4cm, widht = 4cm,
+    height = 4cm, width = 4cm,
     position = {0em,0em}, displacement = 0em,
     with damper = false, with support = true,
     mass thickness = 0.5cm,
   },
   height/.estore in = \frameHeight,%Story height
-  widht/.estore in = \frameWidth,%frame width
+  width/.estore in = \frameWidth,%frame width
   mass thickness/.estore in = \massThickness,%thickness of the floor
   position/.estore in = \framePosition,%position of the left support
   displacement/.estore in = \frameDisplacement,%horizontal displacement at the top
@@ -201,16 +201,11 @@
   \draw[columna] plot [smooth, tension=0.8] coordinates{(p1) (p121) (p122) (p2)};
   \draw[columna] plot [smooth, tension=0.8] coordinates{(p3) (p341) (p342) (p4)};
   \coordinate (p5) at ([shift={({\frameWidth+\frameDisplacement},\frameHeight-\massThickness)}]p1) {};
-    %\coordinate[stock] at (5em,10em) (#1) {};
+  %\coordinate[stock] at (5em,10em) (#1) {};
   \filldraw[stock] (p2) rectangle (p5);
-    %Definir coordenadas para los apoyos
-  \coordinate (p5) at ([shift={(-1.5em,0em)}]p1) {};
-  \coordinate (p6) at ([shift={(1.5em,-1em)}]p1) {};
-  \coordinate (p7) at ([shift={(8.5em,0em)}]p1) {};
-  \coordinate (p8) at ([shift={(11.5em,-1em)}]p1) {};
   \ifsupport
-    \filldraw[empotrado] (p5) rectangle (p6);
-    \filldraw[empotrado] (p7) rectangle (p8);
+    \Support[position = p1];
+    \Support[position = p3];
   \fi
 
 }
