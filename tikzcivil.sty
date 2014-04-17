@@ -32,6 +32,9 @@
 \newif\ifpinned
 \newif\ifsliding
 
+\tikzset{
+  soil style/.style={draw=none,text width=10em,line width=0.1em,pattern = north east lines},
+}
 \pgfkeys{
   /civil/supports/.is family, /civil/supports,
   default/.style = {
@@ -48,7 +51,7 @@
 }
 
 \newcommand\Support[1][]{%
-  \pgfkeys{/civil/supports, default, #1}%
+  \pgfkeys{/civil/supports, default, #1,}%
   % Initial position
   \coordinate (p1) at (\supportPosition) ;
   % If the type of the support is fixed
@@ -57,18 +60,43 @@
     \pgftransformrotate{\supportAngle}
     \coordinate (p2) at ([shift={(-\supportWidth/2,0cm)}]p1) {};
     \coordinate (p3) at ([shift={(\supportWidth/2,-\supportWidth/3)}]p1) {};
-    \filldraw[empotrado] (p2) rectangle (p3);
+    \filldraw[soil style] (p2) rectangle (p3);
     \pgftransformrotate{-\supportAngle}
   \fi
   % If the type of the support is pinned
   \ifpinned
     % Rotate if requested
     \pgftransformrotate{\supportAngle}
-    \coordinate (p4) at ([shift={(-\supportWidth/2,-\supportWidth/3)}]p1) {};
-    \coordinate (p5) at ([shift={(\supportWidth/2,-\supportWidth/3)}]p1) {};
+    % Coordinates for the trianlge
+    \coordinate (p4) at ([shift={(-\supportWidth/2,-\supportWidth*2/3)}]p1) {};
+    \coordinate (p5) at ([shift={(\supportWidth/2,-\supportWidth*2/3)}]p1) {};
+    % Triangle is drawn
     \draw (p1) -- (p4) -- (p5) -- (p1);
-    \coordinate (p6) at ([shift={(\supportWidth/2,-\supportWidth*2/3)}]p1) {};
-    \filldraw[empotrado] (p4) rectangle (p6);
+    % This are te coordinates for the lower-right point of the soil-rectangle
+    \coordinate (p6) at ([shift={(\supportWidth/2,-\supportWidth)}]p1) {};
+    % The rectangle for the soil is drawn
+    \filldraw[soil style] (p4) rectangle (p6);
+    \pgftransformrotate{-\supportAngle}
+  \fi
+  % If the type of the support is pinned and sliding
+  \ifsliding
+    % Rotate if requested
+    \pgftransformrotate{\supportAngle}
+    % Coordinates for the triangle
+    \coordinate (p4) at ([shift={(-\supportWidth/2,-\supportWidth*2/3)}]p1) {};
+    \coordinate (p5) at ([shift={(\supportWidth/2,-\supportWidth*2/3)}]p1) {};
+    % Trianlge is drawn
+    \draw (p1) -- (p4) -- (p5) -- (p1);
+    % Wheels are drawn
+    \coordinate (p6) at ([shift={(0,-\supportWidth*2/3-\supportWidth/10)}]p1);
+    \coordinate (p7) at ([shift={(-\supportWidth*2/5,-\supportWidth*2/3-\supportWidth/10)}]p1);
+    \coordinate (p8) at ([shift={(\supportWidth*2/5,-\supportWidth*2/3-\supportWidth/10)}]p1);
+    \foreach \center in {{(p6)}, {(p7)}, {(p8)}} 
+      \draw \center circle (\supportWidth/10);
+    % Coordinates for the soil under the wheels
+    \coordinate (p9) at ([shift={(0,-\supportWidth/5)}]p4);
+    \coordinate (p10) at ([shift={(0,-\supportWidth/5-\supportWidth/3)}]p5);
+    \filldraw[soil style = soil1] (p9) rectangle (p10);
     \pgftransformrotate{-\supportAngle}
   \fi
 }

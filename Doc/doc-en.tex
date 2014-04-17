@@ -56,6 +56,21 @@
 \chapter{Drawing for the Structural Analysis}
 \section{Dynamic}
 
+\subsection{\texttt{\textbackslash Support} command}
+This command is used to generate different types of supports, like fixed, pined or sliding supports. They can also be rotated.\\
+
+\begin{figure}[!ht]
+  \centering
+  \begin{tikzpicture}[scale=1]
+    \Support[width = 1cm, type=fixed]
+    \Support[position={2cm,0cm}, angle=0, width = 1cm, type=pinned]
+    \Support[position={4cm,0cm}, angle=0, width = 1cm, type=sliding]
+  \end{tikzpicture}
+  \caption{Different supports available}
+  \label{fig:supports}
+\end{figure}
+
+
 \subsection{\texttt{\textbackslash MassWithSpring} command}
 This command draws a typical mass-spring system. It supports also an optional damper and displacement. The basic behavior of this command is shown in fig. \ref{fig:MassWithSpring}. \\
 \begin{figure}[!htp]
@@ -169,11 +184,6 @@ The available options to pass to this command are listed below. The default opti
 
 
 \chapter{Dibujos relacionados con la mecánica de suelos}
-
-\begin{tikzpicture}[scale=1]
-  \Support[width = 1cm, type=fixed]
-  \Support[position={2cm,0cm}, angle=0, width = 1cm, type=pinned]
-\end{tikzpicture}
 
 \end{document}
 
