@@ -50,7 +50,6 @@
   stepnumber=1,
   tabsize=2,
   breaklines=true,
-  size=10pt,
 }
 \lstset{style=customasm, numbers=left, texcl=true}
 
@@ -74,7 +73,7 @@ This command draws a typical mass-spring system. It supports also an optional da
 \end{tikzpicture}
 \end{lstlisting}
 
-More interesting behaviours can be achieved using the optional key values, as shown in fig .\\
+More interesting behaviours can be achieved using the optional key values, as shown in fig (\ref{fig:MassWithSpring2}).\\
 \begin{figure}[!ht]
   \centering
   \begin{tikzpicture}[scale=1]
@@ -95,7 +94,7 @@ More interesting behaviours can be achieved using the optional key values, as sh
 \end{lstlisting}
 
 
-\subsection{\texttt{\textbackslash Frame command}}
+\subsection{\texttt{\textbackslash Frame} command}
 Thus command draws a frame with its mass concentrated above. It is a very common model to describe later a multi-story building in 2D. This command has many options, useful to change the displacement, position, use of supports, damper, among others. In the fig. \ref{fig:frame1} can be seen the normal output of the command without any options.\\
 \begin{figure}[!ht]
   \centering
@@ -108,26 +107,42 @@ Thus command draws a frame with its mass concentrated above. It is a very common
 
 \begin{lstlisting}[firstnumber=1]
 \begin{tikzpicture}[scale=1]
-  \Frame[]
+    \Frame[]
 \end{tikzpicture}
 \end{lstlisting}
 
+The available options to pass to this command are listed below. The default options are shown in \textbf{bold} at the end of each description.\par
+\begin{table}[!h]
+  \centering
+  \caption{Options for the \texttt{\textbackslash Frame} command}
+  \begin{tabular}{l p{8cm} l}\toprule
+    Option & Description & default \\\midrule
+    \texttt{height} & defines the height of the frame/story & (\textbf{4cm})                                      \\
+    \texttt{widht}  & defines de width of the frame & (\textbf{4cm})                                              \\
+    \texttt{mass thickness} & defines the thickness of the concentrated mass & (\textbf{0.4cm})                   \\
+    \texttt{position} & (tuple) defines the position of the base of the left column & (\textbf{\{0,0\}})          \\
+    \texttt{with support} & boolean option, that allows to show supports or not & (\textbf{true})                 \\
+    \texttt{with damper} & boolean option, that defines the presence of a damper in the system & (\textbf{false}) \\
+    \texttt{displacement} & defines the amount of horizontal displacement on the top of the frame & (\textbf{0cm})\\\bottomrule
+  \end{tabular}
+  \label{tab:frameOptions}
+\end{table}
 
 \begin{figure}[!ht]
   \centering
   \subfloat[  ]{%
     \begin{tikzpicture}[scale=0.6]
-      \Frame[position = {0em,0em}]
-      \Frame[position = {0em,10em}, with support = false]
-      \Frame[position = {0em,20em}, with support = false]
+      \Frame[position = {0cm,0em}, height = 6cm]
+      \Frame[position = {0cm,6cm},height = 4cm, with support = false]
+      \Frame[position = {0cm,10cm},height = 4cm, with support = false]
     \end{tikzpicture}
   }
   \qquad
   \subfloat[  ]{%
     \begin{tikzpicture}[scale=0.6]
-      \Frame[position = {0em,0em}, displacement = 0.15em]
-      \Frame[position = {0.15em,10em}, with support = false, displacement = 1.35em]
-      \Frame[position = {1.5em,20em}, with support = false, displacement = 3.4em]
+      \Frame[position = {0em,0em}, displacement = 0.15cm]
+      \Frame[position = {0.15cm,4cm}, with support = false, displacement = 1.35cm]
+      \Frame[position = {1.5cm,8cm}, with support = false, displacement = 3.4cm]
     \end{tikzpicture}
   }
 
@@ -146,9 +161,9 @@ Thus command draws a frame with its mass concentrated above. It is a very common
 \begin{tikzpicture}[scale=0.6]
   \Frame[position = {0em,0em}, displacement = 0.15em]
   \Frame[position = {0.15em,10em}, with support = false,
-         displacement = 1.35em]
+  displacement = 1.35em]
   \Frame[position = {1.5em,20em}, with support = false,
-         displacement = 3.4em]
+  displacement = 3.4em]
 \end{tikzpicture}
 \end{lstlisting}
 
@@ -156,8 +171,8 @@ Thus command draws a frame with its mass concentrated above. It is a very common
 \chapter{Dibujos relacionados con la mecánica de suelos}
 
 \begin{tikzpicture}[scale=1]
-  \MassWithSpring[with damper=true, position={0em,0}, displacement=4em]
-  \MassWithSpring[with damper=true, position={20em,0}, displacement=0em]
+  \Support[width = 1cm, type=fixed]
+  \Support[position={2cm,0cm}, angle=0, width = 1cm, type=pinned]
 \end{tikzpicture}
 
 \end{document}

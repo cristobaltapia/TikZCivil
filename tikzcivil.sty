@@ -24,7 +24,57 @@
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Definition of command \support
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Defines the drawing of different kind of supports, capable of rotating
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newif\iffixed
+\newif\ifpinned
+\newif\ifsliding
+
+\pgfkeys{
+  /civil/supports/.is family, /civil/supports,
+  default/.style = {
+    position = {0cm,0cm}, angle = 0,
+    type = fixed, width = 1cm,
+  },
+  type/.is choice,
+  type/fixed/.code = {\fixedtrue \pinnedfalse \slidingfalse},
+  type/pinned/.code = {\fixedfalse \pinnedtrue \slidingfalse},
+  type/sliding/.code = {\fixedfalse \pinnedfalse \slidingtrue},
+  position/.estore in = \supportPosition,
+  angle/.estore in = \supportAngle,
+  width/.estore in = \supportWidth,
+}
+
+\newcommand\Support[1][]{%
+  \pgfkeys{/civil/supports, default, #1}%
+  % Initial position
+  \coordinate (p1) at (\supportPosition) ;
+  % If the type of the support is fixed
+  \iffixed
+    % Rotate if requested
+    \pgftransformrotate{\supportAngle}
+    \coordinate (p2) at ([shift={(-\supportWidth/2,0cm)}]p1) {};
+    \coordinate (p3) at ([shift={(\supportWidth/2,-\supportWidth/3)}]p1) {};
+    \filldraw[empotrado] (p2) rectangle (p3);
+    \pgftransformrotate{-\supportAngle}
+  \fi
+  % If the type of the support is pinned
+  \ifpinned
+    % Rotate if requested
+    \pgftransformrotate{\supportAngle}
+    \coordinate (p4) at ([shift={(-\supportWidth/2,-\supportWidth/3)}]p1) {};
+    \coordinate (p5) at ([shift={(\supportWidth/2,-\supportWidth/3)}]p1) {};
+    \draw (p1) -- (p4) -- (p5) -- (p1);
+    \coordinate (p6) at ([shift={(\supportWidth/2,-\supportWidth*2/3)}]p1) {};
+    \filldraw[empotrado] (p4) rectangle (p6);
+    \pgftransformrotate{-\supportAngle}
+  \fi
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Definition of command \MassWithSpring:
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Defines the drawing of a typical mass tied to a spring.
 % Optionally it can also have a damper.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -35,7 +85,7 @@
 \newif\ifwall
 
 \pgfkeys{
-  /civil/.is family, /civil,
+  /civil/massWithSpring/.is family, /civil/massWithSpring,
   with damper/.is if = damper,
   with wall/.is if = wall,
   defaultMass/.style = {
@@ -48,7 +98,7 @@
 
 % Definition of the command to draw
 \newcommand\MassWithSpring[1][]{%
-  \pgfkeys{/civil, defaultMass, #1}%
+  \pgfkeys{/civil/massWithSpring, defaultMass, #1}%
   \coordinate (p1) at (\massPosition) ;
   \coordinate (p2) at ([shift={(0em,4em)}]p1) {};
   % The position of the spring varies with the presence or
@@ -98,26 +148,31 @@
   with damper/.is if = damper,
   with support/.is if = support,
   defaultFrame/.style = {
+    height = 4cm, widht = 4cm,
     position = {0em,0em}, displacement = 0em,
     with damper = false, with support = true,
+    mass thickness = 0.5cm,
   },
-  position/.estore in = \framePosition,
-  displacement/.estore in = \frameDisplacement,
+  height/.estore in = \frameHeight,%Story height
+  widht/.estore in = \frameWidth,%frame width
+  mass thickness/.estore in = \massThickness,%thickness of the floor
+  position/.estore in = \framePosition,%position of the left support
+  displacement/.estore in = \frameDisplacement,%horizontal displacement at the top
 }
 
 \newcommand{\Frame}[1][]{%
   \pgfkeys{/civil/frame, defaultFrame, #1}%
   \coordinate (p1) at (\framePosition) {};
-  \coordinate (p2) at ([shift={(\frameDisplacement,10em)}]p1) {};
-  \coordinate (p3) at ([shift={(10em,0em)}]p1) {};
-  \coordinate (p4) at ([shift={({10em+\frameDisplacement},10em)}]p1) {};
-  \coordinate (p121) at ([shift={({\frameDisplacement/7},3em)}]p1) {};
-  \coordinate (p122) at ([shift={({\frameDisplacement*6/7},7em)}]p1) {};
-  \coordinate (p341) at ([shift={({10em+\frameDisplacement/7},3em)}]p1) {};
-  \coordinate (p342) at ([shift={({10em+\frameDisplacement*6/7},7em)}]p1) {};
+  \coordinate (p2) at ([shift={(\frameDisplacement,\frameHeight)}]p1) {};
+  \coordinate (p3) at ([shift={(\frameWidth,0)}]p1) {};
+  \coordinate (p4) at ([shift={({\frameWidth+\frameDisplacement},\frameHeight)}]p1) {};
+  \coordinate (p121) at ([shift={({\frameDisplacement/7},\frameHeight*1/3)}]p1) {};
+  \coordinate (p122) at ([shift={({\frameDisplacement*6/7},\frameHeight*2/3)}]p1) {};
+  \coordinate (p341) at ([shift={({\frameWidth+\frameDisplacement/7},\frameHeight*1/3)}]p1) {};
+  \coordinate (p342) at ([shift={({\frameWidth+\frameDisplacement*6/7},\frameHeight*2/3)}]p1) {};
   \draw[columna] plot [smooth, tension=0.8] coordinates{(p1) (p121) (p122) (p2)};
   \draw[columna] plot [smooth, tension=0.8] coordinates{(p3) (p341) (p342) (p4)};
-  \coordinate (p5) at ([shift={({10em+\frameDisplacement},9em)}]p1) {};
+  \coordinate (p5) at ([shift={({\frameWidth+\frameDisplacement},\frameHeight-\massThickness)}]p1) {};
     %\coordinate[stock] at (5em,10em) (#1) {};
   \filldraw[stock] (p2) rectangle (p5);
     %Definir coordenadas para los apoyos
