@@ -146,7 +146,7 @@
     \coordinate (k8) at ([shift={(0,-\supportWidth*3/10)}]k1);
     \coordinate (k9) at ([shift={(-\supportWidth*2/5,-\supportWidth*3/10)}]k1);
     \coordinate (k10) at ([shift={(\supportWidth*2/5,-\supportWidth*3/10)}]k1);
-    \foreach \center in {{(k8)}, {(k9)}, {(k10)}} 
+    \foreach \center in {{(k8)}, {(k9)}, {(k10)}}
       \draw \center circle (\supportWidth/10);
     % Coordinates for the soil under the wheels
     \coordinate (k11) at ([shift={(0,-\supportWidth/5)}]k6);
@@ -155,6 +155,8 @@
     \pgftransformrotate{-\supportAngle}
   \fi
 }
+% End of the definition
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Definition of command \MassWithSpring:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
