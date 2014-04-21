@@ -54,7 +54,7 @@
 \lstset{style=customasm, numbers=left, texcl=true}
 
 \chapter{Drawing for the Structural Analysis}
-\section{Dynamic}
+\section{Commands}
 
 \subsection{\texttt{\textbackslash Support} command}
 This command is used to generate different types of supports, like fixed, pined or sliding supports. They can also be rotated.\\
@@ -63,13 +63,27 @@ This command is used to generate different types of supports, like fixed, pined 
   \centering
   \begin{tikzpicture}[scale=1]
     \Support[width = 1cm, type=fixed]
-    \Support[position={2cm,0cm}, angle=-16, width = 1cm, type=pinned]
-    \Support[position={4cm,0cm}, angle=15, width = 1cm, type=sliding]
-    \Support[position={6cm,0cm}, angle=30, width = 1cm, type=fixedsliding]
+    \Support[position={2cm,0cm}, angle=0, width = 1cm, type=pinned]
+    \Support[position={4cm,0cm}, angle=0, width = 1cm, type=sliding]
+    \Support[position={6cm,0cm}, angle=0, width = 1cm, type=fixedsliding]
   \end{tikzpicture}
   \caption{Different supports available}
   \label{fig:supports}
 \end{figure}
+
+\begin{table}[!h]
+  \centering
+  \caption{Options for the \texttt{\textbackslash Support} command}
+  \begin{tabular}{l p{9cm} |c}\toprule
+    Option & Description & default \\\midrule
+    \texttt{widht}  & defines de width of the support & \textbf{1cm}                                              \\
+    \texttt{position} & (tuple) defines the position of the support & \textbf{\{0,0\}}          \\
+    \texttt{type} & defines the type of support. Alternatives: \texttt{fixed, pinned, sliding, fixedsliding} & \textbf{fixed} \\
+    \texttt{angle} & ratation in degrees of the support (counterclockwise) & \textbf{0}\\\bottomrule
+  \end{tabular}
+  \label{tab:supportOptions}
+\end{table}
+
 
 
 \subsection{\texttt{\textbackslash MassWithSpring} command}
@@ -131,15 +145,15 @@ The available options to pass to this command are listed below. The default opti
 \begin{table}[!h]
   \centering
   \caption{Options for the \texttt{\textbackslash Frame} command}
-  \begin{tabular}{l p{8cm} l}\toprule
+  \begin{tabular}{l p{9cm} |c}\toprule
     Option & Description & default \\\midrule
-    \texttt{height} & defines the height of the frame/story & (\textbf{4cm})                                      \\
-    \texttt{widht}  & defines de width of the frame & (\textbf{4cm})                                              \\
-    \texttt{mass thickness} & defines the thickness of the concentrated mass & (\textbf{0.4cm})                   \\
-    \texttt{position} & (tuple) defines the position of the base of the left column & (\textbf{\{0,0\}})          \\
-    \texttt{with support} & boolean option, that allows to show supports or not & (\textbf{true})                 \\
-    \texttt{with damper} & boolean option, that defines the presence of a damper in the system & (\textbf{false}) \\
-    \texttt{displacement} & defines the amount of horizontal displacement on the top of the frame & (\textbf{0cm})\\\bottomrule
+    \texttt{height} & defines the height of the frame/story & \textbf{4cm}                                      \\
+    \texttt{widht}  & defines de width of the frame & \textbf{4cm}                                              \\
+    \texttt{mass thickness} & defines the thickness of the concentrated mass & \textbf{0.4cm}                   \\
+    \texttt{position} & (tuple) defines the position of the base of the left column & \textbf{\{0,0\}}          \\
+    \texttt{with support} & boolean option, that allows to show supports or not & \textbf{true}                 \\
+    \texttt{with damper} & boolean option, that defines the presence of a damper in the system & \textbf{false} \\
+    \texttt{displacement} & defines the amount of horizontal displacement on the top of the frame & \textbf{0cm}\\\bottomrule
   \end{tabular}
   \label{tab:frameOptions}
 \end{table}
