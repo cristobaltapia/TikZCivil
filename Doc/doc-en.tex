@@ -63,8 +63,9 @@ This command is used to generate different types of supports, like fixed, pined 
   \centering
   \begin{tikzpicture}[scale=1]
     \Support[width = 1cm, type=fixed]
-    \Support[position={2cm,0cm}, angle=0, width = 1cm, type=pinned]
-    \Support[position={4cm,0cm}, angle=0, width = 1cm, type=sliding]
+    \Support[position={2cm,0cm}, angle=-16, width = 1cm, type=pinned]
+    \Support[position={4cm,0cm}, angle=15, width = 1cm, type=sliding]
+    \Support[position={6cm,0cm}, angle=30, width = 1cm, type=fixedsliding]
   \end{tikzpicture}
   \caption{Different supports available}
   \label{fig:supports}

@@ -28,10 +28,41 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Defines the drawing of different kind of supports, capable of rotating
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Defining conditionals
 \newif\iffixed
 \newif\ifpinned
 \newif\ifsliding
+\newif\iffixedsliding
+% Defining some auxiliary commands
+\newcommand\activatefixed{%
+  \fixedtrue
+  \pinnedfalse
+  \slidingfalse
+  \fixedslidingfalse
+}
 
+\newcommand\activatepinned{%
+  \fixedfalse
+  \pinnedtrue
+  \slidingfalse
+  \fixedslidingfalse
+}
+
+\newcommand\activatesliding{%
+  \fixedfalse
+  \pinnedfalse
+  \slidingtrue
+  \fixedslidingfalse
+}
+
+\newcommand\activatefixedsliding{%
+  \fixedfalse
+  \pinnedfalse
+  \slidingfalse
+  \fixedslidingtrue
+}
+
+% Style for the ground
 \tikzset{
   soil style/.style={draw=none,text width=10em,line width=0.1em,pattern = north east lines},
 }
@@ -42,14 +73,16 @@
     type = fixed, width = 1cm,
   },
   type/.is choice,
-  type/fixed/.code = {\fixedtrue \pinnedfalse \slidingfalse},
-  type/pinned/.code = {\fixedfalse \pinnedtrue \slidingfalse},
-  type/sliding/.code = {\fixedfalse \pinnedfalse \slidingtrue},
+  type/fixed/.code = {\activatefixed},
+  type/pinned/.code = {\activatepinned},
+  type/sliding/.code = {\activatesliding},
+  type/fixedsliding/.code = {\activatefixedsliding},
   position/.estore in = \supportPosition,
   angle/.estore in = \supportAngle,
   width/.estore in = \supportWidth,
 }
 
+% Definition of the command begins
 \newcommand\Support[1][]{%
   \pgfkeys{/civil/supports, default, #1,}%
   % Initial position
@@ -97,6 +130,28 @@
     \coordinate (k9) at ([shift={(0,-\supportWidth/5)}]k4);
     \coordinate (k10) at ([shift={(0,-\supportWidth/5-\supportWidth/3)}]k5);
     \filldraw[soil style = soil1] (k9) rectangle (k10);
+    \pgftransformrotate{-\supportAngle}
+  \fi
+  % If the type is fixed-sliding
+  \iffixedsliding
+    % Rotate if requested
+    \pgftransformrotate{\supportAngle}
+    % Line
+    \coordinate (k6) at ([shift={(-\supportWidth/2,-\supportWidth/5)}]k1);
+    \coordinate (k7) at ([shift={(\supportWidth/2,-\supportWidth/5)}]k1);
+    \coordinate (k13) at ([shift={(0,-\supportWidth*2/10)}]k1);
+    \draw[line width = 2pt] (k6) -- (k7);
+    \draw[line width = 2pt] (k1) -- (k13);
+    % Wheels are drawn
+    \coordinate (k8) at ([shift={(0,-\supportWidth*3/10)}]k1);
+    \coordinate (k9) at ([shift={(-\supportWidth*2/5,-\supportWidth*3/10)}]k1);
+    \coordinate (k10) at ([shift={(\supportWidth*2/5,-\supportWidth*3/10)}]k1);
+    \foreach \center in {{(k8)}, {(k9)}, {(k10)}} 
+      \draw \center circle (\supportWidth/10);
+    % Coordinates for the soil under the wheels
+    \coordinate (k11) at ([shift={(0,-\supportWidth/5)}]k6);
+    \coordinate (k12) at ([shift={(0,-\supportWidth/5-\supportWidth/3)}]k7);
+    \filldraw[soil style = soil1] (k11) rectangle (k12);
     \pgftransformrotate{-\supportAngle}
   \fi
 }
@@ -190,6 +245,7 @@
 
 \newcommand{\Frame}[1][]{%
   \pgfkeys{/civil/frame, defaultFrame, #1}%
+  %\pgfkeys{/civil/supports, defaultFrame, #1}%
   \coordinate (p1) at (\framePosition) {};
   \coordinate (p2) at ([shift={(\frameDisplacement,\frameHeight)}]p1) {};
   \coordinate (p3) at ([shift={(\frameWidth,0)}]p1) {};
@@ -201,7 +257,6 @@
   \draw[columna] plot [smooth, tension=0.8] coordinates{(p1) (p121) (p122) (p2)};
   \draw[columna] plot [smooth, tension=0.8] coordinates{(p3) (p341) (p342) (p4)};
   \coordinate (p5) at ([shift={({\frameWidth+\frameDisplacement},\frameHeight-\massThickness)}]p1) {};
-  %\coordinate[stock] at (5em,10em) (#1) {};
   \filldraw[stock] (p2) rectangle (p5);
   \ifsupport
     \Support[position = p1];
