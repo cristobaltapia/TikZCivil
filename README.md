@@ -9,4 +9,4 @@ With this packages you are able to draw frames, retaining walls or many other ty
 ===========
 1.1. Linux:
 ===========
-In linux you need to put this files 
+To install this package on a Linux system, you only need to run the installer located in the "Instal.sh" file. It will place the needed files in a texmf directory on your $HOME folder. Then it will update the latex database with texhash.
