@@ -225,7 +225,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % This command defines a frame with a mass
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Deffinition of if-keys
+% Definition of if-keys
 \newif\ifsupport
 
 \pgfkeys{
@@ -256,10 +256,13 @@
   \coordinate (p122) at ([shift={({\frameDisplacement*6/7},\frameHeight*2/3)}]p1) {};
   \coordinate (p341) at ([shift={({\frameWidth+\frameDisplacement/7},\frameHeight*1/3)}]p1) {};
   \coordinate (p342) at ([shift={({\frameWidth+\frameDisplacement*6/7},\frameHeight*2/3)}]p1) {};
+  % Columns are drawn
   \draw[columna] plot [smooth, tension=0.8] coordinates{(p1) (p121) (p122) (p2)};
   \draw[columna] plot [smooth, tension=0.8] coordinates{(p3) (p341) (p342) (p4)};
+  % Mass-plate is drawn
   \coordinate (p5) at ([shift={({\frameWidth+\frameDisplacement},\frameHeight-\massThickness)}]p1) {};
   \filldraw[stock] (p2) rectangle (p5);
+  % Supports are drawn
   \ifsupport
     \Support[position = p1];
     \Support[position = p3];
@@ -267,4 +270,50 @@
 
 }
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Definition of command \FrameSimple
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Defines a simple frame, where you can make each dof move independently.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\pgfkeys{
+  /civil/frameSimple/.is family, /civil/frameSimple,
+  with damper/.is if = damper,
+  with support/.is if = support,
+  defaultFrame/.style = {
+    height = 4cm, width = 4cm,
+    position = {0em,0em}, displacement = 0em,
+    with damper = false, with support = true,
+    mass thickness = 0.5cm,
+  },
+  height/.estore in = \frameHeight,%Story height
+  width/.estore in = \frameWidth,%frame width
+  mass thickness/.estore in = \massThickness,%thickness of the floor
+  position/.estore in = \framePosition,%position of the left support
+  displacement/.estore in = \frameDisplacement,%horizontal displacement at the top
+}
+
+% Definition of the command
+\newcommand{\FrameSimple}[1][]{%
+  \pgfkeys{/civil/frameSimple, defaultFrame, #1}%
+  \coordinate (p1) at (\framePosition) {};
+  \coordinate (p2) at ([shift={(\frameDisplacement,\frameHeight)}]p1) {};
+  \coordinate (p3) at ([shift={(\frameWidth,0)}]p1) {};
+  \coordinate (p4) at ([shift={({\frameWidth+\frameDisplacement},\frameHeight)}]p1) {};
+  \coordinate (p121) at ([shift={({\frameDisplacement/7},\frameHeight*1/3)}]p1) {};
+  \coordinate (p122) at ([shift={({\frameDisplacement*6/7},\frameHeight*2/3)}]p1) {};
+  \coordinate (p341) at ([shift={({\frameWidth+\frameDisplacement/7},\frameHeight*1/3)}]p1) {};
+  \coordinate (p342) at ([shift={({\frameWidth+\frameDisplacement*6/7},\frameHeight*2/3)}]p1) {};
+  % Columns are drawn
+  \draw[columna] plot [smooth, tension=0.8] coordinates{(p1) (p121) (p122) (p2)};
+  \draw[columna] plot [smooth, tension=0.8] coordinates{(p3) (p341) (p342) (p4)};
+  % Beam on the top is drawn
+  \draw[columna] plot [smooth, tension=0.8] coordinates{(p2) (p4)};
+  % Supports are drawn
+  \ifsupport
+    \Support[position = p1];
+    \Support[position = p3];
+  \fi
+
+}
 \endinput

@@ -63,7 +63,7 @@
 \section{Commands}
 
 \subsection{\texttt{\textbackslash Support} command}
-This command is used to generate different types of supports, like fixed, pined or sliding supports. They can also be rotated.\\
+This command is used to generate different types of supports, like fixed, pinned or sliding supports. They can also be rotated.\\
 
 \noindent\begin{minipage}{.4\textwidth}
   \centering
@@ -206,6 +206,24 @@ As with the \texttt{\textbackslash MassWithSpring} command, we can create more c
 
 
 \subsection{\texttt{\textbackslash FrameSimple} command}
+The \texttt{\textbackslash Frame} command is best suited for dynamic systems, so when we want to draw a frame for other purposes, we should use this command. It creates a nice frame with bars, whose support's type can be changed. It also allows to vary its dimensions (width and hight) and makes possible to move each degree of freedom separately\footnote{Not yet implemented}.\\
+
+\noindent\begin{minipage}{.4\textwidth}
+  \centering
+  \begin{tikzpicture}[scale=1]
+    \FrameSimple[]
+  \end{tikzpicture}
+  \captionof{figure}{A simple frame.}
+  \label{fig:frameSimple1}
+\end{minipage}%
+\begin{minipage}[c]{.6\textwidth}
+  \begin{lstlisting}[firstnumber=1, label=frameSimpleExampleCode1]
+  \begin{tikzpicture}[scale=1]
+\FrameSimple[]
+  \end{tikzpicture}
+  \end{lstlisting}
+\end{minipage}
+
 
 
 \chapter{Dibujos relacionados con la mecánica de suelos}
