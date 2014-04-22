@@ -21,6 +21,7 @@
 \setlength{\parindent}{1cm}
 \usepackage{tikz}
 \usepackage{floatrow}
+\floatsetup[table]{style=Plaintop}
 %+++++++++++++++++++++++++++++++
 % Se importa la libreria
 %+++++++++++++++++++++++++++++++
@@ -135,13 +136,13 @@ In many situations we would like to describe more interesting systems. This can 
 \end{figure}
 
 \begin{lstlisting}[firstnumber=1]
-  \begin{tikzpicture}[scale=1]
-\MassWithSpring[displacement = 2em, with damper = true]
-\MassWithSpring[displacement = -1em,  with wall = false, 
-                position = {10.5em,0em}]
-\MassWithSpring[displacement = 3em,  with wall = false, 
-                position = {18.0em,0em}]
-  \end{tikzpicture}
+\begin{tikzpicture}[scale=1]
+  \MassWithSpring[displacement = 2em, with damper = true]
+  \MassWithSpring[displacement = -1em,  with wall = false, 
+                  position = {10.5em,0em}]
+  \MassWithSpring[displacement = 3em,  with wall = false, 
+                  position = {18.0em,0em}]
+\end{tikzpicture}
 \end{lstlisting}
 
 
@@ -151,16 +152,16 @@ Thus command draws a frame with its mass concentrated above. It is a very common
 \noindent\begin{minipage}{.4\textwidth}
   \centering
   \begin{tikzpicture}[scale=1]
-    \Frame[]
+    \Frame[with damper=true]
   \end{tikzpicture}
   \captionof{figure}{A frame with the mass concentrated at the top.}
   \label{fig:frame1}
 \end{minipage}%
 \begin{minipage}[c]{.6\textwidth}
   \begin{lstlisting}[firstnumber=1, label=frameExampleCode1]
-  \begin{tikzpicture}[scale=1]
-\Frame[]
-  \end{tikzpicture}
+\begin{tikzpicture}[scale=1]
+  \Frame[with damper=true]
+\end{tikzpicture}
   \end{lstlisting}
 \end{minipage}
 
@@ -186,7 +187,7 @@ As with the \texttt{\textbackslash MassWithSpring} command, we can create more c
   \centering
   \begin{tikzpicture}[scale=0.7]
     \Frame[position = {0em,0em}, displacement=0.07cm]
-    \Frame[position = {0.07cm,4cm}, with support=false, displacement=0.7cm]
+    \Frame[position = {0.07cm,4cm}, with support=false, displacement=0.7cm, with damper=true]
     \Frame[position = {0.77cm,8cm}, with support=false, displacement=1.7cm]
     \MassWithSpring[position={2.8cm,12cm}, with damper=true]
   \end{tikzpicture}
