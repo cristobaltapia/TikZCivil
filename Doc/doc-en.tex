@@ -1,6 +1,6 @@
 %
 \documentclass[11pt,letterpaper,oneside]{book}
-\usepackage[left=3cm,right=2cm,top=1cm,bottom=1.5cm,includeheadfoot]{geometry}
+\usepackage[left=2.5cm,right=2cm,top=1cm,bottom=1.5cm,includeheadfoot]{geometry}
 \usepackage[english]{babel}
 %\usepackage[latin1]{inputenc}
 \usepackage[utf8x]{inputenc}
@@ -14,6 +14,7 @@
 \usepackage{verbatim}   % Comentarios multilinea
 \usepackage{tabularx}
 \usepackage{booktabs}
+\usepackage{color}
 \usepackage{ifsym}
 \usepackage{caption}
 %\usepackage{float}
@@ -46,8 +47,14 @@
   belowcaptionskip=1\baselineskip,
   %frame=single,
   xleftmargin=\parindent,
-  language=teX,
-  basicstyle=\footnotesize\ttfamily,
+  language=TeX,
+  basicstyle=\footnotesize\linespread{1.15}\ttfamily,
+  columns=fullflexible,
+  numberstyle=\tiny,
+  xleftmargin=0.7cm,
+  framesep=0.2cm,
+  frame=tlbr,
+  framerule=0pt,
   commentstyle=\itshape\color{green!40!black},
   keywordstyle=\bfseries\color{blue},
   identifierstyle=\color{black},
@@ -55,8 +62,10 @@
   stepnumber=0,
   tabsize=2,
   breaklines=true,
+  backgroundcolor=\color{blue!30},
   captionpos=b,
-  morekeywords={\Support,\begin,\MassWithSpring,\Frame}
+  morekeywords={\Support,\begin,\MassWithSpring,\Frame,
+                \FrameSimple,\RetainingWall}
 }
 \lstset{style=customasm, numbers=left, texcl=true}
 
@@ -219,9 +228,9 @@ The \texttt{\textbackslash Frame} command is best suited for dynamic systems, so
 \end{minipage}%
 \begin{minipage}[c]{.6\textwidth}
   \begin{lstlisting}[firstnumber=1, label=frameSimpleExampleCode1]
-  \begin{tikzpicture}[scale=1]
-\FrameSimple[]
-  \end{tikzpicture}
+\begin{tikzpicture}[scale=1]
+  \FrameSimple[]
+\end{tikzpicture}
   \end{lstlisting}
 \end{minipage}
 
@@ -234,16 +243,16 @@ The \texttt{\textbackslash Frame} command is best suited for dynamic systems, so
 \noindent\begin{minipage}{.4\textwidth}
   \centering
   \begin{tikzpicture}[scale=1]
-    \RetainingWall[fill color=black!20, left ground=true]
+    \RetainingWall[fill color=black!20, left ground=true, right ground=true]
   \end{tikzpicture}
   \captionof{figure}{Retaining Wall}
   \label{fig:RetainingWall1}
 \end{minipage}%
 \begin{minipage}[c]{.6\textwidth}
   \begin{lstlisting}[firstnumber=1, label=RetainingWallExampleCode]
-  \begin{tikzpicture}[scale=1]
-    \RetainingWall[]
-  \end{tikzpicture}
+\begin{tikzpicture}[scale=1]
+  \RetainingWall[fill color=black!20, left ground=true, right ground=true]
+\end{tikzpicture}
   \end{lstlisting}
 \end{minipage}
 

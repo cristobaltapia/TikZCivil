@@ -41,7 +41,7 @@
     bottom thickness = 1cm, height = 5cm,
     wall position ratio = 0.4, fill color = black!20,
     left ground = false, right ground = false,
-    left ground height = 1cm, beta = 15,
+    left ground height = 2cm, beta = 15,
   },
   position/.estore in = \basePosition,
   base width/.estore in = \baseWidth,
@@ -62,9 +62,11 @@
   \coordinate (w1) at (\basePosition) ;
   %Ground is drown
   \ifgroundleft
-    \coordinate (gl1) at ([shift={(-\wallRatio*\baseWidth, \leftGroundH)}]w1);
-    \coordinate (gl2) at ([shift={(\wallRatio*\baseWidth, \leftGroundH-\baseThickness*0.4)}]w1);
-    \filldraw[soil style] (gl1) rectangle (gl2);
+    \coordinate (lg1) at ([shift={(-\wallRatio*\baseWidth, \leftGroundH)}]w1);
+    \coordinate (lg2) at ([shift={(\wallRatio*\baseWidth, \leftGroundH-\baseThickness*0.4)}]w1);
+    \coordinate (lg3) at ([shift={(\wallRatio*\baseWidth, \leftGroundH)}]w1);
+    \draw[line width=1pt] (lg1) -- (lg3);
+    \filldraw[soil style] (lg1) rectangle (lg2);
   \fi
   %base coords
   \coordinate (b1) at ([yshift=\baseThickness]w1);
@@ -77,6 +79,16 @@
   %Wall is drawn
   \filldraw[style=line wall, fill=\fillColor] (w1) -- (b1) -- (b2) -- (b3) -- (b4) -- (b5)
         -- (b6) -- (b7) -- (w1);
+  %ground to the right of the wall (with inclination)
+  \ifgroundright
+    %Rotation in an angle = beta
+    \pgftransformrotate{\beta}
+    \coordinate (rg1) at ([xshift=\baseWidth]b4);
+    \coordinate (rg2) at ([yshift=-\baseThickness*0.4]rg1);
+    \draw[line width=1pt] (b4) -- (rg1);
+    \filldraw[soil style] (b4) rectangle (rg2);
+    \pgftransformrotate{-\beta}
+  \fi
 } 
 
 \endinput
