@@ -227,7 +227,27 @@ The \texttt{\textbackslash Frame} command is best suited for dynamic systems, so
 
 
 
-\chapter{Dibujos relacionados con la mecánica de suelos}
+\chapter{Drawings for the Geomechanics}
+\section{Commands}
+
+\subsection{\texttt{\textbackslash RetainingWall} command}
+\noindent\begin{minipage}{.4\textwidth}
+  \centering
+  \begin{tikzpicture}[scale=1]
+    \RetainingWall[fill color=black!20, left ground=true]
+  \end{tikzpicture}
+  \captionof{figure}{Retaining Wall}
+  \label{fig:RetainingWall1}
+\end{minipage}%
+\begin{minipage}[c]{.6\textwidth}
+  \begin{lstlisting}[firstnumber=1, label=RetainingWallExampleCode]
+  \begin{tikzpicture}[scale=1]
+    \RetainingWall[]
+  \end{tikzpicture}
+  \end{lstlisting}
+\end{minipage}
+
+
 
 \end{document}
 
