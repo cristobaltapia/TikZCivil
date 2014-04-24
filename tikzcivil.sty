@@ -25,22 +25,28 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{tikzcivil}[2014/04/13 StructuralAnalysis Package]
 \RequirePackage{tikz}
-\RequirePackage{import}
 \def\packagename{tikzcivil}
 %
 %Here are the tikz options that are going to be used in this package.
 \usetikzlibrary{calc,arrows,shapes,positioning,shadows,trees,patterns,decorations.pathmorphing,decorations.markings}
 \tikzset{
-  stock/.style={draw=black,text width=10em,line width=0.1em,pattern = north east lines},
-  empotrado/.style={draw=none,text width=10em,line width=0.1em,pattern = north east lines},
-  columna/.style={color=black, line width=0.1em},
-  resorte/.style={color=black, line width=0.1em},
+  ground/.style={draw=black,text width=10em,line width=0.1em,pattern = north east lines},
+  soil style/.style={draw=none,line width=1pt, color=white,
+    pattern = north east lines, preaction={draw,drop shadow={opacity=1}},
+    },
+  column/.style={color=black, line width=0.1em},
+  spring/.style={color=black,decoration={aspect=0.3, segment length=\separation, 
+      amplitude=0.5em,coil},
+    decorate},
+  line wall/.style={color=black, line width=1pt, fill=white},
+  thrust/.style={triangle 90 cap, line width=2pt},
+  frame element/.style={color=black, line width=2pt},
   flecha/.style={thick,<->},
   damper/.style={thick,decoration={markings,
     mark connection node=dmp,
     mark=at position 0.5 with
     {
-      \node (dmp) [thick,inner sep=0pt,transform shape,rotate=-90,minimum width=15pt,minimum height=3pt,draw=none] {};
+      \node (dmp) [thick,inner sep=0pt,transform shape,rotate=-90,minimum width=11pt,minimum height=3pt,draw=none] {};
       \draw [thick] ($(dmp.north east)+(2pt,0)$) -- (dmp.south east) -- (dmp.south west) -- ($(dmp.north west)+(2pt,0)$);
       \draw [thick] ($(dmp.north)+(0,-3pt)$) -- ($(dmp.north)+(0,3pt)$);
     }
@@ -50,7 +56,7 @@
 %--------------- Read files ---------------------------------------------------%
 %The files where the commands are defined are included
 %------------------------------------------------------------------------------%
-\input tikzcivil-structural.tex
 \input tikzcivil-geomechanics.tex
+\input tikzcivil-structural.tex
 
 \endinput
