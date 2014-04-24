@@ -27,6 +27,56 @@
 %A retaining wall will be defined. 
 %------------------------------------------------------------------------------%
 %
-
+%Conditionals to know if ground should be drawn
+\newif\ifgroundleft
+\newif\ifgroundright
+%
+\pgfkeys{
+  /civil/retainingWall/.is family, /civil/retainingWall,
+  left ground/.is if = groundleft,
+  right ground/.is if = groundright,
+  default/.style = {
+    position = {0cm,0cm}, base width = 5cm,
+    base thickness = 0.8cm, top thickness = 0.5cm,
+    bottom thickness = 1cm, height = 5cm,
+    wall position ratio = 0.4, fill color = black!20,
+    left ground = false, right ground = false,
+    left ground height = 1cm, beta = 15,
+  },
+  position/.estore in = \basePosition,
+  base width/.estore in = \baseWidth,
+  base thickness/.estore in = \baseThickness,
+  top thickness/.estore in = \topThickness,
+  bottom thickness/.estore in = \bottomThickness,
+  height/.estore in = \height,
+  wall position ratio/.estore in = \wallRatio,
+  fill color/.estore in = \fillColor,
+  left ground height/.estore in = \leftGroundH,
+  beta/.estore in = \beta,
+}
+%
+%Definition of the command \retainingWall
+\newcommand\RetainingWall[1][]{%
+  \pgfkeys{/civil/retainingWall, default, #1,}%
+  %Initial position
+  \coordinate (w1) at (\basePosition) ;
+  %Ground is drown
+  \ifgroundleft
+    \coordinate (gl1) at ([shift={(-\wallRatio*\baseWidth, \leftGroundH)}]w1);
+    \coordinate (gl2) at ([shift={(\wallRatio*\baseWidth, \leftGroundH-\baseThickness*0.4)}]w1);
+    \filldraw[soil style] (gl1) rectangle (gl2);
+  \fi
+  %base coords
+  \coordinate (b1) at ([yshift=\baseThickness]w1);
+  \coordinate (b2) at ([xshift=(\baseWidth*\wallRatio-\bottomThickness/2)]b1);
+  \coordinate (b3) at ([shift={(\bottomThickness-\topThickness, \height)}]b2);
+  \coordinate (b4) at ([xshift=\topThickness]b3);
+  \coordinate (b5) at ([yshift=-\height]b4);
+  \coordinate (b6) at ([xshift=\baseWidth*(1-\wallRatio) - \bottomThickness/2]b5);
+  \coordinate (b7) at ([yshift=-\baseThickness]b6);
+  %Wall is drawn
+  \filldraw[style=line wall, fill=\fillColor] (w1) -- (b1) -- (b2) -- (b3) -- (b4) -- (b5)
+        -- (b6) -- (b7) -- (w1);
+} 
 
 \endinput
