@@ -73,7 +73,7 @@
 \section{Commands}
 
 \subsection{\texttt{\textbackslash Support} command}
-This command is used to generate different types of supports, like fixed, pinned or sliding supports. They can also be rotated.\\
+This command is used to generate different types of supports, like fixed, pinned or sliding supports. They can also be rotated.\par
 
 \noindent\begin{minipage}{.4\textwidth}
   \centering
@@ -89,11 +89,11 @@ This command is used to generate different types of supports, like fixed, pinned
   \begin{lstlisting}[firstnumber=1, label=supportExampleCode]
 \begin{tikzpicture}[scale=1.0]
   \Support[width = 1cm, type=fixed]
-  \Support[position={2cm,0cm}, angle=0, 
+  \Support[position={2cm,0cm}, angle=0,
            width = 1cm, type=fixedsliding]
-  \Support[position={0cm,-2cm}, angle=0, 
+  \Support[position={0cm,-2cm}, angle=0,
            width = 1cm, type=sliding]
-  \Support[position={2cm,-2cm}, angle=0, 
+  \Support[position={2cm,-2cm}, angle=0,
            width = 1cm, type=pinned]
 \end{tikzpicture}
   \end{lstlisting}
@@ -114,7 +114,7 @@ This command is used to generate different types of supports, like fixed, pinned
 
 
 \subsection{\texttt{\textbackslash MassWithSpring} command}
-This command draws a typical mass-spring system. It supports also an optional damper and displacement. The basic behavior of this command is shown in fig. \ref{fig:MassWithSpring}. \\
+This command draws a typical mass-spring system. It supports also an optional damper and displacement. The basic behavior of this command is shown in fig. \ref{fig:MassWithSpring}. \par
 
 \noindent\begin{minipage}{.4\textwidth}
   \centering
@@ -147,16 +147,16 @@ In many situations we would like to describe more interesting systems. This can 
 \begin{lstlisting}[firstnumber=1]
 \begin{tikzpicture}[scale=1]
   \MassWithSpring[displacement = 2em, with damper = true]
-  \MassWithSpring[displacement = -1em,  with wall = false, 
+  \MassWithSpring[displacement = -1em,  with wall = false,
                   position = {10.5em,0em}]
-  \MassWithSpring[displacement = 3em,  with wall = false, 
+  \MassWithSpring[displacement = 3em,  with wall = false,
                   position = {18.0em,0em}]
 \end{tikzpicture}
 \end{lstlisting}
 
 
 \subsection{\texttt{\textbackslash Frame} command}
-Thus command draws a frame with its mass concentrated above. It is a very common model to describe later a multi-story building in 2D. This command has many options, useful to change the displacement, position, use of supports, damper, among others. In the fig. \ref{fig:frame1} can be seen the normal output of the command without any options.\\
+Thus command draws a frame with its mass concentrated above. It is a very common model to describe later a multi-story building in 2D. This command has many options, useful to change the displacement, position, use of supports, damper, among others. In the fig. \ref{fig:frame1} can be seen the normal output of the command without any options.\par
 
 \noindent\begin{minipage}{.4\textwidth}
   \centering
@@ -190,7 +190,7 @@ Thus command draws a frame with its mass concentrated above. It is a very common
   \label{tab:frameOptions}
 \end{table}
 
-As with the \texttt{\textbackslash MassWithSpring} command, we can create more complex structures, and even add some displacement to it or add a tuned mass damper on the top (why not?). This can be seen on fig. \ref{fig:frame2}.\\
+As with the \texttt{\textbackslash MassWithSpring} command, we can create more complex structures, and even add some displacement to it or add a tuned mass damper on the top (why not?). This can be seen on fig. \ref{fig:frame2}.\par
 
 \noindent\begin{minipage}{.35\textwidth}
   \centering
@@ -216,7 +216,7 @@ As with the \texttt{\textbackslash MassWithSpring} command, we can create more c
 
 
 \subsection{\texttt{\textbackslash FrameSimple} command}
-The \texttt{\textbackslash Frame} command is best suited for dynamic systems, so when we want to draw a frame for other purposes, we should use this command. It creates a nice frame with bars, whose support's type can be changed. It also allows to vary its dimensions (width and hight) and makes possible to move each degree of freedom separately\footnote{Not yet implemented}.\\
+The \texttt{\textbackslash Frame} command is best suited for dynamic systems, so when we want to draw a frame for other purposes, we should use this command. It creates a nice frame with bars, whose support's type can be changed. It also allows to vary its dimensions (width and hight) and makes possible to move each degree of freedom separately\footnote{Not yet implemented}.\par
 
 \noindent\begin{minipage}{.4\textwidth}
   \centering
@@ -240,10 +240,12 @@ The \texttt{\textbackslash Frame} command is best suited for dynamic systems, so
 \section{Commands}
 
 \subsection{\texttt{\textbackslash RetainingWall} command}
+Description.\par
+
 \noindent\begin{minipage}{.4\textwidth}
   \centering
   \begin{tikzpicture}[scale=1]
-    \RetainingWall[fill color=black!20, left ground=true, right ground=true]
+    \RetainingWall[fill color=black!20, beta=20, left ground=true, right ground=true]
   \end{tikzpicture}
   \captionof{figure}{Retaining Wall}
   \label{fig:RetainingWall1}
