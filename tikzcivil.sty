@@ -31,7 +31,8 @@
 \usetikzlibrary{calc,arrows,shapes,positioning,shadows,trees,patterns,decorations.pathmorphing,decorations.markings}
 \tikzset{
   ground/.style={draw=black,text width=10em,line width=0.1em,pattern = north east lines},
-  soil style/.style={draw=none,line width=1pt, color=white,
+  soil style/.style={draw=none,line width=1pt, color=white, fill,
+    minimum width=3cm,minimum height=0.3cm,inner sep=0pt,
     pattern = north east lines, preaction={drop shadow={opacity=0}},
     },
   column/.style={color=black, line width=0.1em},
