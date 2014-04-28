@@ -78,6 +78,9 @@
   \pgftransformrotate{-\surfaceAngle}
 }
 
+%--------------- Definition of command \RetainingWall -------------------------%
+%A retaining wall will be defined.
+%------------------------------------------------------------------------------%
 %Conditionals to know if ground should be drawn
 \newif\ifgroundleft
 \newif\ifgroundright
@@ -111,11 +114,11 @@
   \pgfkeys{/civil/retainingWall, default, #1,}%
   %Initial position
   \coordinate (w1) at (\basePosition) ;
-  %Ground is drown
+  %Ground to the left of the wall is drown
   \ifgroundleft
-    \coordinate (lg1) at ([shift={(-\wallRatio*\baseWidth, \leftGroundH)}]w1);
-    \coordinate (lg3) at ([shift={(\wallRatio*\baseWidth, \leftGroundH)}]w1);
-    \groundPoints{lg1}{lg3}
+  \coordinate (lg1) at ([shift={(-\wallRatio*\baseWidth, \leftGroundH)}]w1);
+  \coordinate (lg3) at ([shift={(\wallRatio*\baseWidth, \leftGroundH)}]w1);
+  \groundPoints{lg1}{lg3}
   \fi
   %base coords
   \coordinate (b1) at ([yshift=\baseThickness]w1);
@@ -127,20 +130,75 @@
   \coordinate (b7) at ([yshift=-\baseThickness]b6);
   %Wall is drawn
   \filldraw[style=line wall, fill=\fillColor] (w1) -- (b1) -- (b2) -- (b3) -- (b4) -- (b5)
-        -- (b6) -- (b7) -- (w1);
+  -- (b6) -- (b7) -- (w1);
   %ground to the right of the wall (with inclination)
   \ifgroundright
-    %Rotation in an angle = beta
-    \pgftransformrotate{\beta}
-    \coordinate (rg1) at ([xshift=\baseWidth]b4);
-    \coordinate (rg2) at ([yshift=-\baseThickness*0.4]rg1);
-      \groundPoints{b4}{rg1}
-    \pgftransformrotate{-\beta}
-    %\filldraw[rotate around={\beta:(b4)}, transform shape, soil style] (b4) rectangle (rg2);
-    %\rotatebox{\beta}{
-    %\node[soil style,anchor=north, transform shape] at ($(b4)!0.5!(rg1)$){};
-    %}
+  %Rotation in an angle = beta
+  \pgftransformrotate{\beta}
+  \coordinate (rg1) at ([xshift=\baseWidth]b4);
+  \coordinate (rg2) at ([yshift=-\baseThickness*0.4]rg1);
+  \groundPoints{b4}{rg1}
+  \pgftransformrotate{-\beta}
   \fi
-} 
+}
+
+%--------------- Definition of command \GravityWall ---------------------------%
+%A gravity wall is defined
+%------------------------------------------------------------------------------%
+
+\pgfkeys{
+  /civil/gravityWall/.is family, /civil/gravityWall,
+  left ground/.is if = groundleft,
+  right ground/.is if = groundright,
+  default/.style = {
+    position = {0cm,0cm}, base width = 5cm,
+    top width = 2.0cm, base thickness = 0.5cm,
+    height = 5cm, fill color = black!20,
+    left ground = false, right ground = false,
+    left ground height = 2cm, beta = 15,
+    dist = 1.5cm,
+  },
+  position/.estore in = \basePosition,
+  base thickness/.estore in = \baseThickness,
+  base width/.estore in = \baseWidth,
+  top width/.estore in = \topWidth,
+  height/.estore in = \height,
+  fill color/.estore in = \fillColor,
+  left ground height/.estore in = \leftGroundH,
+  beta/.estore in = \beta,
+  dist/.estore in = \dist,
+}
+%
+%Definition of the command \retainingWall
+\newcommand\GravityWall[1][]{%
+  \pgfkeys{/civil/gravityWall, default, #1,}%
+  %Initial position
+  \coordinate (w1) at (\basePosition) ;
+  %Ground to the left of the wall is drown
+  \ifgroundleft
+    \coordinate (lg1) at ([shift={(-\baseWidth/2, \leftGroundH)}]w1);
+    \coordinate (lg3) at ([shift={(\baseWidth/2, \leftGroundH)}]w1);
+    \groundPoints{lg1}{lg3}
+  \fi
+  %base coords
+  \coordinate (b1) at ([yshift=\baseThickness]w1);
+  \coordinate (b2) at ([shift={(\dist,\height)}]b1);
+  \coordinate (b3) at ([xshift=\topWidth]b2);
+  \coordinate (b4) at ([shift={(\baseWidth,\baseThickness)}]w1);
+  \coordinate (b5) at ([xshift=\baseWidth]w1);
+  %Wall is drawn
+  \filldraw[style=line wall, fill=\fillColor] (w1) -- (b1) -- (b2) -- 
+  (b3) -- (b4) -- (b5) -- (w1);
+  %%ground to the right of the wall (with inclination)
+  \ifgroundright
+  %Rotation in an angle = beta
+  \pgftransformrotate{\beta}
+  \coordinate (rg1) at ([xshift=\baseWidth]b3);
+  \coordinate (rg2) at ([yshift=-\baseThickness*0.4]rg1);
+  \groundPoints{b3}{rg1}
+  \pgftransformrotate{-\beta}
+  \fi
+}
+
 
 \endinput
