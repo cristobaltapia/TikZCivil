@@ -65,7 +65,7 @@
   backgroundcolor=\color{blue!30},
   captionpos=b,
   morekeywords={\Support,\begin,\MassWithSpring,\Frame,
-                \FrameSimple,\RetainingWall}
+                \FrameSimple,\RetainingWall, \GravityWall}
 }
 \lstset{style=customasm, numbers=left, texcl=true}
 
@@ -254,6 +254,25 @@ Description.\par
   \begin{lstlisting}[firstnumber=1, label=RetainingWallExampleCode]
 \begin{tikzpicture}[scale=1]
   \RetainingWall[fill color=black!20, left ground=true, right ground=true]
+\end{tikzpicture}
+  \end{lstlisting}
+\end{minipage}
+
+\subsection{\texttt{\textbackslash GravityWall} command}
+
+\noindent\begin{minipage}{.4\textwidth}
+  \centering
+  \begin{tikzpicture}[scale=1]
+    \GravityWall[fill color=black!20, beta=20, left ground=true, right ground=true,
+                 left ground height=1cm]
+  \end{tikzpicture}
+  \captionof{figure}{Gravity Wall}
+  \label{fig:GravityWall1}
+\end{minipage}%
+\begin{minipage}[c]{.6\textwidth}
+  \begin{lstlisting}[firstnumber=1, label=RetainingWallExampleCode]
+\begin{tikzpicture}[scale=1]
+\GravityWall[fill color=black!20, beta=20, left ground=true, right ground=true, left ground height=1cm]
 \end{tikzpicture}
   \end{lstlisting}
 \end{minipage}
