@@ -23,14 +23,19 @@
 %% Here are defined all kind of drawing, that are useful for the Geomechanics.
 % Author: Cristóbal Tapia Camú. crtapia a gmail dot com
 %
-%--------------- Definition of command \RetainingWall -------------------------%
-%A retaining wall will be defined. 
-%------------------------------------------------------------------------------%
 %
-%Styles for the ground
-%This style draws lines on the ground
+%-------------\groundLines:----------------------------------------------------%
+%A command to draw a line between two points (coordinates) and draw some diagnal
+%lines beneth it. It could be used to signal the presence of a solid ground,
+% like rock.
+%------------------------------------------------------------------------------%
+% #1: coordinate 1
+% #2: coordinate 2
+%
 \newcommand\groundLines[2]{
   \draw[thick] (#1) -- (#2);
+  \pgfextractangle{\surfaceAngle}{#1}{#2}
+  \pgftransformrotate{\surfaceAngle}
   \begin{scope}
     %    \clip (left) rectangle (right);
     \clip (#1) rectangle ([yshift=-0.4cm]#2);
@@ -44,23 +49,33 @@
     }
     %\pgfresetboundingbox
   \end{scope}
+  \pgftransformrotate{-\surfaceAngle}
 }
-%This style draws points, which resemble the look of sand
+%-------------\groundPoints:---------------------------------------------------%
+%A command to draw a line between two points (coordinates) and draw some
+%points beneath it, to signal the presence of the soil (sand for example)
+%This command draws points abd a line, which resemble the look of sand
 %ToDo: use pgfkeys to pass a value for the thickness of the soil
+%------------------------------------------------------------------------------%
+% #1: coordinate 1
+% #2: coordinate 2
 \newcommand\groundPoints[2]{
   \draw[thick] (#1) -- (#2);
+  \pgfextractangle{\surfaceAngle}{#1}{#2}
+  \pgftransformrotate{\surfaceAngle}
   \begin{scope}
     \clip (#1) rectangle ([yshift=-0.4cm]#2);
-    \foreach \li in {0,1.0cm,...,5cm}{
+    \foreach \li in {0,1.0cm,...,20cm}{
       \draw[very thin] ([shift={(0.1cm+\li,-0.1cm)}]#1) circle (0.03cm)
-       ++(0.1cm,-0.05cm) circle (0.01cm)
-       ++(0.2cm,-0.01cm) circle (0.02cm)
-       ++(0.1cm,0.03cm) circle (0.01cm)
-       ++(0.2cm,0.0cm) circle (0.02cm)
-       ++(0.1cm,0.05cm) circle (0.01cm);
+      ++(0.1cm,-0.05cm) circle (0.01cm)
+      ++(0.2cm,-0.01cm) circle (0.02cm)
+      ++(0.1cm,0.03cm) circle (0.01cm)
+      ++(0.2cm,0.0cm) circle (0.02cm)
+      ++(0.1cm,0.05cm) circle (0.01cm);
     }
     %\pgfresetboundingbox
   \end{scope}
+  \pgftransformrotate{-\surfaceAngle}
 }
 
 %Conditionals to know if ground should be drawn
