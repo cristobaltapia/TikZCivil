@@ -73,6 +73,7 @@
 \section{Commands}
 
 \subsection{\texttt{\textbackslash Support} command}
+\label{subsec:support}
 This command is used to generate different types of supports, like fixed, pinned or sliding supports. They can also be rotated.\par
 
 \noindent\begin{minipage}{.4\textwidth}
@@ -99,12 +100,12 @@ This command is used to generate different types of supports, like fixed, pinned
   \end{lstlisting}
 \end{minipage}
 
-\begin{table}[!h]
+\begin{table}[!ht]
   \centering
   \caption{Options for the \texttt{\textbackslash Support} command}
   \begin{tabular}{l p{9cm} |c}\toprule
     Option & Description & default \\\midrule
-    \texttt{widht}  & defines de width of the support & \textbf{1cm}                                              \\
+    \texttt{widht}  & defines the width of the support & \textbf{1cm}                                              \\
     \texttt{position} & (tuple) defines the position of the support & \textbf{\{0,0\}}          \\
     \texttt{type} & defines the type of support. Alternatives: \texttt{fixed, pinned, sliding, fixedsliding} & \textbf{fixed} \\
     \texttt{angle} & rotation in degrees of the support (counterclockwise) & \textbf{0}\\\bottomrule
@@ -174,7 +175,7 @@ Thus command draws a frame with its mass concentrated above. It is a very common
   \end{lstlisting}
 \end{minipage}
 
-\begin{table}[!h]
+\begin{table}[!ht]
   \centering
   \caption{Options for the \texttt{\textbackslash Frame} command}
   \begin{tabular}{l p{9cm} |c}\toprule
@@ -235,6 +236,34 @@ The \texttt{\textbackslash Frame} command is best suited for dynamic systems, so
 \end{minipage}
 
 
+\begin{table}[!ht]
+  \centering
+  \caption{Options for the \texttt{\textbackslash FrameSimple} command}
+  \begin{tabular}{l p{9cm} |c}\toprule
+    Option & Description & default \\\midrule
+    \texttt{widht}  & defines the width of the frame & \textbf{4cm}\\
+    \texttt{height} & defines the height of the frame & \textbf{4cm}\\
+    \texttt{position} & (tuple) defines the position of the support & \textbf{\{0,0\}}          \\
+    \texttt{left support} & left support type (see \ref{subsec:support} for more details.) & \textbf{fixed}\\
+    \texttt{right support} & left support type (see \ref{subsec:support} for more details.) & \textbf{fixed}\\
+    \texttt{dof\textbf{X}} & moves/rotate degree of freedom "X". & \texttt{0}\\
+  \end{tabular}
+  \label{tab:framesimple}
+\end{table}
+
+\begin{figure}[!ht]
+  \centering
+  \begin{tikzpicture}[scale=0.7]
+    \FrameSimple[dof1=1.0cm]
+    \FrameSimple[position={6cm,0}, dof3=45]
+    \FrameSimple[position={12cm,0}, dof2=0.5cm]
+    \FrameSimple[position={0,-6cm}, dof4=0.5cm]
+    \FrameSimple[position={6cm,-6cm}, dof6=-45]
+    \FrameSimple[position={12cm,-6cm}, dof5=0.5cm]
+  \end{tikzpicture}
+  \caption{Moving different DOF's}
+  \label{fig:framesimple-example}
+\end{figure}
 
 \chapter{Drawings for the Geomechanics}
 \section{Commands}
