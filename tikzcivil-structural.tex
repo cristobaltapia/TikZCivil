@@ -272,7 +272,8 @@
 %------------------- Definition of command \FrameSimple -----------------------%
 %Defines a simple frame, where you can make each dof move independently.
 %------------------------------------------------------------------------------%
-%
+%This frame has six degree of freedom (three at each of the upper nodes).
+%Each of them can be moved independently.
 \pgfkeys{
   /civil/frameSimple/.is family, /civil/frameSimple,
   with damper/.is if = damper,
@@ -282,34 +283,59 @@
     position = {0em,0em}, displacement = 0em,
     with damper = false, with support = true,
     mass thickness = 0.5cm,
+    left support = fixed, right support = fixed,
+    %Default values for each dof
+    dof1=0, dof2=0, dof3=0,
+    dof4=0, dof5=0, dof6=0,
   },
   height/.estore in = \frameHeight,%Story height
   width/.estore in = \frameWidth,%frame width
   mass thickness/.estore in = \massThickness,%thickness of the floor
   position/.estore in = \framePosition,%position of the left support
   displacement/.estore in = \frameDisplacement,%horizontal displacement at the top
+  left support/.estore in = \leftSupport,
+  right support/.estore in = \rightSupport,
+  dof1/.estore in = \dofOne,
+  dof2/.estore in = \dofTwo,
+  dof3/.estore in = \dofThree,
+  dof4/.estore in = \dofFour,
+  dof5/.estore in = \dofFive,
+  dof6/.estore in = \dofSix,
 }
 %
 %Definition of the command
 \newcommand{\FrameSimple}[1][]{%
   \pgfkeys{/civil/frameSimple, defaultFrame, #1}%
+  %Definition of coordinates of the nodes
   \coordinate (p1) at (\framePosition) {};
-  \coordinate (p2) at ([shift={(\frameDisplacement,\frameHeight)}]p1) {};
-  \coordinate (p3) at ([shift={(\frameWidth,0)}]p1) {};
-  \coordinate (p4) at ([shift={({\frameWidth+\frameDisplacement},\frameHeight)}]p1) {};
-  \coordinate (p121) at ([shift={({\frameDisplacement/7},\frameHeight*1/3)}]p1) {};
-  \coordinate (p122) at ([shift={({\frameDisplacement*6/7},\frameHeight*2/3)}]p1) {};
-  \coordinate (p341) at ([shift={({\frameWidth+\frameDisplacement/7},\frameHeight*1/3)}]p1) {};
-  \coordinate (p342) at ([shift={({\frameWidth+\frameDisplacement*6/7},\frameHeight*2/3)}]p1) {};
-  %Columns are drawn
-  \draw[frame element] plot [smooth, tension=0.8] coordinates{(p1) (p121) (p122) (p2)};
-  \draw[frame element] plot [smooth, tension=0.8] coordinates{(p3) (p341) (p342) (p4)};
-  %Beam on the top is drawn
-  \draw[frame element] plot [smooth, tension=0.8] coordinates{(p2) (p4)};
+  \coordinate (p2) at ([shift={(\dofOne,\frameHeight+\dofTwo)}]p1) {};
+  \coordinate (p3) at ([shift={(\frameWidth+\dofFour,\frameHeight+\dofFive)}]p1) {};
+  \coordinate (p4) at ([shift={(\frameWidth,0)}]p1) {};
+  %The following coordinates are used when drawing the elements to
+  %make the curves look better
+  \coordinate (p11) at ([shift={(0,\frameHeight/10)}]p1);
+  \pgftransformrotate{\dofThree}
+  \coordinate (p22) at ([shift={(\frameWidth/10,0)}]p2);
+  \coordinate (p21) at ([shift={(0,-\frameHeight/10)}]p2);
+  \pgftransformrotate{-\dofThree}
+  \pgftransformrotate{\dofSix}
+  \coordinate (p32) at ([shift={(-\frameWidth/10,0)}]p3);
+  \coordinate (p33) at ([shift={(0,-\frameHeight/10)}]p3);
+  \pgftransformrotate{-\dofSix}
+  \coordinate (p43) at ([shift={(0,\frameHeight/10)}]p4);
+  %Frame element 1
+  \draw[frame element] (p1) to[out=90,in=-90] (p11) to[out=90,in=-90+\dofThree]
+                       (p21) to[out=90+\dofThree,in=-90+\dofThree] (p2);
+  %Frame element 2
+  \draw[frame element] (p2) to[out=0+\dofThree,in=180+\dofThree] (p22) to[out=0+\dofThree,in=180+\dofSix]
+                       (p32) to[out=0+\dofSix,in=180+\dofSix] (p3);
+  %Frame element 3
+  \draw[frame element] (p3) to[out=-90+\dofSix,in=90+\dofSix] (p33) to[out=-90+\dofSix,in=90]
+                       (p43) to[out=-90,in=90] (p4);
   %Supports are drawn
   \ifsupport
     \Support[position = p1];
-    \Support[position = p3];
+    \Support[position = p4, type=\rightSupport];
   \fi
 %
 }
