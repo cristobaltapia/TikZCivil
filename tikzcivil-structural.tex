@@ -117,7 +117,7 @@
     \coordinate (k6) at ([shift={(0,-\supportWidth*2/3-\supportWidth/10)}]k1);
     \coordinate (k7) at ([shift={(-\supportWidth*2/5,-\supportWidth*2/3-\supportWidth/10)}]k1);
     \coordinate (k8) at ([shift={(\supportWidth*2/5,-\supportWidth*2/3-\supportWidth/10)}]k1);
-    \foreach \center in {{(k6)}, {(k7)}, {(k8)}} 
+    \foreach \center in {{(k6)}, {(k7)}, {(k8)}}
       \draw \center circle (\supportWidth/10);
     %Coordinates for the soil under the wheels
     \coordinate (k9) at ([shift={(0,-\supportWidth/5)}]k4);
@@ -151,7 +151,7 @@
 %End of the definition
 %
 %----------------- Definition of command \MassWithSpring: ---------------------%
-%Defines the drawing of a typical mass tied to a spring. Optionally it can also 
+%Defines the drawing of a typical mass tied to a spring. Optionally it can also
 %have a damper.
 %------------------------------------------------------------------------------%
 %
@@ -241,13 +241,14 @@
   \coordinate (p2) at ([shift={(\frameDisplacement,\frameHeight)}]p1) {};
   \coordinate (p3) at ([shift={(\frameWidth,0)}]p1) {};
   \coordinate (p4) at ([shift={({\frameWidth+\frameDisplacement},\frameHeight)}]p1) {};
-  \coordinate (p121) at ([shift={({\frameDisplacement/7},\frameHeight*1/3)}]p1) {};
-  \coordinate (p122) at ([shift={({\frameDisplacement*6/7},\frameHeight*2/3)}]p1) {};
-  \coordinate (p341) at ([shift={({\frameWidth+\frameDisplacement/7},\frameHeight*1/3)}]p1) {};
-  \coordinate (p342) at ([shift={({\frameWidth+\frameDisplacement*6/7},\frameHeight*2/3)}]p1) {};
+  %
+  \coordinate (p121) at ([shift={(0,\massThickness)}]p1) {};
+  \coordinate (p122) at ([shift={(0,-\massThickness)}]p2) {};
+  \coordinate (p341) at ([shift={(0,\massThickness)}]p3) {};
+  \coordinate (p342) at ([shift={(0,-\massThickness)}]p4) {};
   %Columns are drawn
-  \draw[column] plot [smooth, tension=0.8] coordinates{(p1) (p121) (p122) (p2)};
-  \draw[column] plot [smooth, tension=0.8] coordinates{(p3) (p341) (p342) (p4)};
+  \draw[column] (p1) to[out=90,in=-90] (p121) to[out=90,in=-90] (p122) to[out=90,in=-90] (p2);
+  \draw[column] (p3) to[out=90,in=-90] (p341) to[out=90,in=-90] (p342) to[out=90,in=-90] (p4);
   %Mass-plate is drawn
   \coordinate (p5) at ([shift={({\frameWidth+\frameDisplacement},\frameHeight-\massThickness)}]p1) {};
   \filldraw[ground] (p2) rectangle (p5);
