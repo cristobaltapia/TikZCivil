@@ -223,6 +223,8 @@ The \texttt{\textbackslash Frame} command is best suited for dynamic systems, so
   \centering
   \begin{tikzpicture}[scale=1]
     \FrameSimple[]
+    \axisTwoRot[position={0.0cm,4.2cm}]{1}{2}{3}
+    \axisTwoRot[position={4.0cm,4.2cm}]{4}{5}{6}
   \end{tikzpicture}
   \captionof{figure}{A simple frame.}
   \label{fig:frameSimple1}
@@ -231,6 +233,8 @@ The \texttt{\textbackslash Frame} command is best suited for dynamic systems, so
   \begin{lstlisting}[firstnumber=1, label=frameSimpleExampleCode1]
 \begin{tikzpicture}[scale=1]
   \FrameSimple[]
+  \axisTwoRot[position={0.0cm,4.2cm}]{1}{2}{3}
+  \axisTwoRot[position={4.0cm,4.2cm}]{4}{5}{6}
 \end{tikzpicture}
   \end{lstlisting}
 \end{minipage}
