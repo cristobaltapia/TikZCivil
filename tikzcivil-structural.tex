@@ -34,9 +34,9 @@
     position = {0cm,0cm}, angle = 0,
     size = 30pt,
   },
-  position/.estore in = \axisPosition,
-  angle/.estore in = \axisAngle,
-  size/.estore in = \axisSize,
+  position/.store in = \axisPosition,
+  angle/.store in = \axisAngle,
+  size/.store in = \axisSize,
 }
 \newcommand\axisTwoRot[4][]{%
   \pgfkeys{/civil/axistworot, default, #1,}%
@@ -101,9 +101,9 @@
   type/pinned/.code = {\activatepinned},
   type/sliding/.code = {\activatesliding},
   type/fixedsliding/.code = {\activatefixedsliding},
-  position/.estore in = \supportPosition,
-  angle/.estore in = \supportAngle,
-  width/.estore in = \supportWidth,
+  position/.store in = \supportPosition,
+  angle/.store in = \supportAngle,
+  width/.store in = \supportWidth,
 }
 %--------Definition of the command begins-------------------------------------%
 \newcommand\Support[1][]{%
@@ -124,14 +124,16 @@
     %Rotate if requested
     \pgftransformrotate{\supportAngle}
     %Coordinates for the trianlge
-    \coordinate (k4) at ([shift={(-\supportWidth/2,-\supportWidth*2/3)}]k1) {};
-    \coordinate (k5) at ([shift={(\supportWidth/2,-\supportWidth*2/3)}]k1) {};
+    \coordinate (k4) at ([shift={(-\supportWidth*1/3,-\supportWidth*1/3)}]k1) {};
+    \coordinate (k5) at ([shift={(\supportWidth*1/3,-\supportWidth*1/3)}]k1) {};
     %Triangle is drawn
     \draw (k1) -- (k4) -- (k5) -- (k1);
     %This are te coordinates for the lower-right point of the soil-rectangle
-    \coordinate (k6) at ([shift={(\supportWidth/2,-\supportWidth)}]k1) {};
+    \coordinate (k6) at ([shift={(\supportWidth/2,-\supportWidth*2/3)}]k1) {};
+    %This are te coordinates for the upper-left point of the soil-rectangle
+    \coordinate (k7) at ([shift={(-\supportWidth/2,-\supportWidth*1/3)}]k1) {};
     %The rectangle for the soil is drawn
-    \filldraw[soil style] (k4) rectangle (k6);
+    \filldraw[soil style] (k7) rectangle (k6);
     \pgftransformrotate{-\supportAngle}
   \fi
   %If the type of the support is pinned and sliding
@@ -139,19 +141,19 @@
     %Rotate if requested
     \pgftransformrotate{\supportAngle}
     %Coordinates for the triangle
-    \coordinate (k4) at ([shift={(-\supportWidth/2,-\supportWidth*2/3)}]k1) {};
-    \coordinate (k5) at ([shift={(\supportWidth/2,-\supportWidth*2/3)}]k1) {};
+    \coordinate (k4) at ([shift={(-\supportWidth*1/3,-\supportWidth*1/3)}]k1) {};
+    \coordinate (k5) at ([shift={(\supportWidth*1/3,-\supportWidth*1/3)}]k1) {};
     %Trianlge is drawn
     \draw (k1) -- (k4) -- (k5) -- (k1);
     %Wheels are drawn
-    \coordinate (k6) at ([shift={(0,-\supportWidth*2/3-\supportWidth/10)}]k1);
-    \coordinate (k7) at ([shift={(-\supportWidth*2/5,-\supportWidth*2/3-\supportWidth/10)}]k1);
-    \coordinate (k8) at ([shift={(\supportWidth*2/5,-\supportWidth*2/3-\supportWidth/10)}]k1);
+    \coordinate (k6) at ([shift={(0,-\supportWidth*1/3-\supportWidth/10)}]k1);
+    \coordinate (k7) at ([shift={(-\supportWidth*1/5,-\supportWidth*1/3-\supportWidth/10)}]k1);
+    \coordinate (k8) at ([shift={(\supportWidth*1/5,-\supportWidth*1/3-\supportWidth/10)}]k1);
     \foreach \center in {{(k6)}, {(k7)}, {(k8)}}
       \draw \center circle (\supportWidth/10);
     %Coordinates for the soil under the wheels
-    \coordinate (k9) at ([shift={(0,-\supportWidth/5)}]k4);
-    \coordinate (k10) at ([shift={(0,-\supportWidth/5-\supportWidth/3)}]k5);
+    \coordinate (k9) at ([shift={(-\supportWidth/2,-\supportWidth/10)}]k6);
+    \coordinate (k10) at ([shift={(\supportWidth/2,-\supportWidth/3-\supportWidth/10)}]k6);
     \filldraw[soil style] (k9) rectangle (k10);
     \pgftransformrotate{-\supportAngle}
   \fi
@@ -198,8 +200,8 @@
     position = {0em,0em}, displacement = 0em,
     with damper = false, with wall = true,
   },
-  position/.estore in = \massPosition,
-  displacement/.estore in = \massDisplacement,
+  position/.store in = \massPosition,
+  displacement/.store in = \massDisplacement,
 }
 %
 %Definition of the command to draw
@@ -257,11 +259,11 @@
     with damper = false, with support = true,
     mass thickness = 0.5cm,
   },
-  height/.estore in = \frameHeight,%Story height
-  width/.estore in = \frameWidth,%frame width
-  mass thickness/.estore in = \massThickness,%thickness of the floor
-  position/.estore in = \framePosition,%position of the left support
-  displacement/.estore in = \frameDisplacement,%horizontal displacement at the top
+  height/.store in = \frameHeight,%Story height
+  width/.store in = \frameWidth,%frame width
+  mass thickness/.store in = \massThickness,%thickness of the floor
+  position/.store in = \framePosition,%position of the left support
+  displacement/.store in = \frameDisplacement,%horizontal displacement at the top
 }
 %
 \newcommand{\Frame}[1][]{%
@@ -317,33 +319,44 @@
     %Default values for each dof
     dof1=0, dof2=0, dof3=0,
     dof4=0, dof5=0, dof6=0,
+    dof7=0, dof8=0, dof9=0,
+    dof10=0, dof11=0, dof12=0,
   },
-  height/.estore in = \frameHeight,%Story height
-  width/.estore in = \frameWidth,%frame width
-  mass thickness/.estore in = \massThickness,%thickness of the floor
-  position/.estore in = \framePosition,%position of the left support
-  displacement/.estore in = \frameDisplacement,%horizontal displacement at the top
-  left support/.estore in = \leftSupport,
-  right support/.estore in = \rightSupport,
-  dof1/.estore in = \dofOne,
-  dof2/.estore in = \dofTwo,
-  dof3/.estore in = \dofThree,
-  dof4/.estore in = \dofFour,
-  dof5/.estore in = \dofFive,
-  dof6/.estore in = \dofSix,
+  height/.store in = \frameHeight,%Story height
+  width/.store in = \frameWidth,%frame width
+  mass thickness/.store in = \massThickness,%thickness of the floor
+  position/.store in = \framePosition,%position of the left support
+  displacement/.store in = \frameDisplacement,%horizontal displacement at the top
+  left support/.store in = \leftSupport,
+  right support/.store in = \rightSupport,
+  dof1/.store in = \dofOne,
+  dof2/.store in = \dofTwo,
+  dof3/.store in = \dofThree,
+  dof4/.store in = \dofFour,
+  dof5/.store in = \dofFive,
+  dof6/.store in = \dofSix,
+  dof7/.store in = \dofSeven,
+  dof8/.store in = \dofEight,
+  dof9/.store in = \dofNine,
+  dof10/.store in = \dofTen,
+  dof11/.store in = \dofEleven,
+  dof12/.store in = \dofTwelve,
 }
 %
 %Definition of the command
 \newcommand{\FrameSimple}[1][]{%
   \pgfkeys{/civil/frameSimple, defaultFrame, #1}%
   %Definition of coordinates of the nodes
-  \coordinate (p1) at (\framePosition) {};
-  \coordinate (p2) at ([shift={(\dofOne,\frameHeight+\dofTwo)}]p1) {};
-  \coordinate (p3) at ([shift={(\frameWidth+\dofFour,\frameHeight+\dofFive)}]p1) {};
-  \coordinate (p4) at ([shift={(\frameWidth,0)}]p1) {};
+  \coordinate (p0) at (\framePosition) {};
+  \coordinate (p1) at ([shift={(\dofSeven,\dofEight)}]p0) {};
+  \coordinate (p2) at ([shift={(\dofOne,\frameHeight+\dofTwo)}]p0) {};
+  \coordinate (p3) at ([shift={(\frameWidth+\dofFour,\frameHeight+\dofFive)}]p0) {};
+  \coordinate (p4) at ([shift={(\frameWidth+\dofTen,\dofEleven)}]p0) {};
   %The following coordinates are used when drawing the elements to
   %make the curves look better
+  \pgftransformrotate{\dofNine}
   \coordinate (p11) at ([shift={(0,\frameHeight/10)}]p1);
+  \pgftransformrotate{-\dofNine}
   \pgftransformrotate{\dofThree}
   \coordinate (p22) at ([shift={(\frameWidth/10,0)}]p2);
   \coordinate (p21) at ([shift={(0,-\frameHeight/10)}]p2);
@@ -352,19 +365,24 @@
   \coordinate (p32) at ([shift={(-\frameWidth/10,0)}]p3);
   \coordinate (p33) at ([shift={(0,-\frameHeight/10)}]p3);
   \pgftransformrotate{-\dofSix}
+  \pgftransformrotate{\dofTwelve}
   \coordinate (p43) at ([shift={(0,\frameHeight/10)}]p4);
+  \pgftransformrotate{-\dofTwelve}
   %Frame element 1
-  \draw[frame element] (p1) to[out=90,in=-90] (p11) to[out=90,in=-90+\dofThree]
+  \draw[frame element] (p1) to[out=90+\dofNine,in=-90+\dofNine]
+                       (p11) to[out=90+\dofNine,in=-90+\dofThree]
                        (p21) to[out=90+\dofThree,in=-90+\dofThree] (p2);
   %Frame element 2
-  \draw[frame element] (p2) to[out=0+\dofThree,in=180+\dofThree] (p22) to[out=0+\dofThree,in=180+\dofSix]
+  \draw[frame element] (p2) to[out=0+\dofThree,in=180+\dofThree]
+                       (p22) to[out=0+\dofThree,in=180+\dofSix]
                        (p32) to[out=0+\dofSix,in=180+\dofSix] (p3);
   %Frame element 3
-  \draw[frame element] (p3) to[out=-90+\dofSix,in=90+\dofSix] (p33) to[out=-90+\dofSix,in=90]
-                       (p43) to[out=-90,in=90] (p4);
+  \draw[frame element] (p3) to[out=-90+\dofSix,in=90+\dofSix]
+                       (p33) to[out=-90+\dofSix,in=90+\dofTwelve]
+                       (p43) to[out=-90+\dofTwelve,in=90+\dofTwelve] (p4);
   %Supports are drawn
   \ifsupport
-    \Support[position = p1];
+    \Support[position = p1, type=\leftSupport];
     \Support[position = p4, type=\rightSupport];
   \fi
 %

@@ -225,6 +225,8 @@ The \texttt{\textbackslash Frame} command is best suited for dynamic systems, so
     \FrameSimple[]
     \axisTwoRot[position={0.0cm,4.2cm}]{1}{2}{3}
     \axisTwoRot[position={4.0cm,4.2cm}]{4}{5}{6}
+    \axisTwoRot[position={0.2cm,0.2cm}]{7}{8}{9}
+    \axisTwoRot[position={4.2cm,0.2cm}]{10}{11}{12}
   \end{tikzpicture}
   \captionof{figure}{A simple frame.}
   \label{fig:frameSimple1}
@@ -235,6 +237,8 @@ The \texttt{\textbackslash Frame} command is best suited for dynamic systems, so
   \FrameSimple[]
   \axisTwoRot[position={0.0cm,4.2cm}]{1}{2}{3}
   \axisTwoRot[position={4.0cm,4.2cm}]{4}{5}{6}
+  \axisTwoRot[position={0.0cm,0.2cm}]{7}{8}{9}
+  \axisTwoRot[position={4.0cm,0.2cm}]{9}{11}{12}
 \end{tikzpicture}
   \end{lstlisting}
 \end{minipage}
@@ -251,6 +255,7 @@ The \texttt{\textbackslash Frame} command is best suited for dynamic systems, so
     \texttt{left support} & left support type (see \ref{subsec:support} for more details.) & \textbf{fixed}\\
     \texttt{right support} & left support type (see \ref{subsec:support} for more details.) & \textbf{fixed}\\
     \texttt{dof\textbf{X}} & moves/rotate degree of freedom "X". & \texttt{0}\\
+    \bottomrule
   \end{tabular}
   \label{tab:framesimple}
 \end{table}
@@ -262,8 +267,8 @@ The \texttt{\textbackslash Frame} command is best suited for dynamic systems, so
     \FrameSimple[position={6cm,0}, dof3=45]
     \FrameSimple[position={12cm,0}, dof2=0.5cm]
     \FrameSimple[position={0,-6cm}, dof4=0.5cm]
-    \FrameSimple[position={6cm,-6cm}, dof6=-45]
-    \FrameSimple[position={12cm,-6cm}, dof5=0.5cm]
+    \FrameSimple[position={6cm,-6cm}, dof6=-45, dof12=45, right support=pinned]
+    \FrameSimple[position={12cm,-6cm}, dof10=0.5cm, right support=sliding, dof12=20]
   \end{tikzpicture}
   \caption{Moving different DOF's}
   \label{fig:framesimple-example}
