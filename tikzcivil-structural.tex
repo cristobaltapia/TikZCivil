@@ -23,6 +23,36 @@
 %
 %This file contains all the commands related to the structural analysis.
 %
+%--------------- Definition of command \axisTwoRot ----------------------------%
+%Defines an axis with two perpendicular directions and one rotation. This is
+%intended to be used in the description of degrees of freedom.
+%------------------------------------------------------------------------------%
+%
+\pgfkeys{
+  /civil/axistworot/.is family, /civil/axistworot,
+  default/.style = {
+    position = {0cm,0cm}, angle = 0,
+    size = 30pt,
+  },
+  position/.estore in = \axisPosition,
+  angle/.estore in = \axisAngle,
+  size/.estore in = \axisSize,
+}
+\newcommand\axisTwoRot[4][]{%
+  \pgfkeys{/civil/axistworot, default, #1,}%
+  \coordinate (p0) at (\axisPosition) {};
+  \node (px) at ([xshift=\axisSize]p0) {#2};
+  \node (py) at ([yshift=\axisSize]p0) {#3};
+  \coordinate (pr) at ([xshift=\axisSize*1/2*cos(-20)]p0) {};
+  \coordinate (pr) at ([yshift=\axisSize*1/2*sin(-20)]pr) {};
+  \coordinate (prname) at ([xshift=\axisSize*4/5*cos(120)]p0) {};
+  \node (prname) at ([yshift=\axisSize*4/5*sin(120)]prname) {#4};
+  %Axis will be drawn
+  \draw [->, thick] (p0) -- (px);
+  \draw [->, thick] (p0) -- (py);
+  \draw [->, thick] (pr) arc (-20:160:\axisSize*1/2);
+}
+
 %--------------- Definition of command \support -------------------------------%
 %Defines the drawing of different kind of supports, capable of rotating
 %------------------------------------------------------------------------------%
