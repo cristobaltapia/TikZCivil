@@ -1,8 +1,7 @@
 %
-\documentclass[11pt,letterpaper,oneside]{book}
+\documentclass[10pt,letterpaper,oneside]{book}
 \usepackage[left=2.5cm,right=2cm,top=1cm,bottom=1.5cm,includeheadfoot]{geometry}
 \usepackage[english]{babel}
-%\usepackage[latin1]{inputenc}
 \usepackage[utf8x]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
@@ -11,7 +10,6 @@
 \usepackage{emp}
 \usepackage{graphicx}
 \usepackage{fancyhdr}
-\usepackage{verbatim}   % Comentarios multilinea
 \usepackage{tabularx}
 \usepackage{booktabs}
 \usepackage{color}
@@ -19,14 +17,26 @@
 \usepackage{caption}
 %\usepackage{float}
 \usepackage[font=small]{caption}
-\setlength{\parindent}{1cm}
+%\setlength{\parindent}{1cm}
 \usepackage{tikz}
+\usepackage{titlesec}
 \usepackage{floatrow}
-\floatsetup[table]{style=Plaintop}
-%+++++++++++++++++++++++++++++++
-% Se importa la libreria
-%+++++++++++++++++++++++++++++++
+\floatsetup[table]{style=Plaintop, font=small}
+\usepackage[hidelinks]{hyperref}
 \usepackage{tikzcivil}
+%Change in the look of the titles fonts
+\titleformat{\subsection}[runin]{\normalfont\ttfamily\large\bfseries\color{red}}
+{\thesubsection}{1em}{}\titlespacing{\section}{5pc}{*2}{*2}[5pc]
+
+\titleformat{\section}[block]
+{\filright\large
+\addtolength{\titlewidth}{2pc}%
+\titleline*[c]{\titlerule*[.6pc]{\tiny\textbullet}}%
+\addvspace{6pt}%
+\normalfont\sffamily}
+{\thesection}{1em}{}
+\titlespacing{\section}
+{5pc}{*2}{*2}[5pc]
 
 \begin{document}
 \begin{titlepage}
@@ -64,20 +74,97 @@
   breaklines=true,
   backgroundcolor=\color{blue!30},
   captionpos=b,
-  morekeywords={\Support,\begin,\MassWithSpring,\Frame,
+  morekeywords={\axisTwo, \axisTwoRot,\Support,\begin,\MassWithSpring,\Frame,
                 \FrameSimple,\RetainingWall, \GravityWall}
 }
 \lstset{style=customasm, numbers=left, texcl=true}
 
 \chapter{Drawing for the Structural Analysis}
+The following commands are designed to be used in the description of typical civil engineering problems. Each command will have a brief description of its use and one or two examples. The commands also accept different options, that affect a variety of properties in each drawing. This options are also presented in a table positioned in the same section as the description of the command.\par
+
 \section{Commands}
 
-\subsection{\texttt{\textbackslash Support} command}
+\subsection{\textbackslash axisTwo}
+\label{subsec:axisTwo}
+This commands allows to draw a two-dimensional axis, where the name of each of the perpendicular directions must be given by the user. It is useful when one needs to specify the degrees of freedom of a system or part of a system, when there is no rotation involved.\par
+
+
+\noindent\begin{minipage}{.4\textwidth}
+  \centering
+  \vspace{10pt}
+  \begin{tikzpicture}
+    \axisTwo[]{1}{2}
+  \end{tikzpicture}
+  \label{fig:axistwo}
+    \captionof{figure}{2D axis.}
+\end{minipage}%
+\begin{minipage}[c]{.6\textwidth}
+  \vspace{10pt}
+  \begin{lstlisting}[firstnumber=1, label=axisTwoExampleCode]
+\begin{tikzpicture}
+  \axisTwo[]{1}{2}
+\end{tikzpicture}
+  \end{lstlisting}
+\end{minipage}
+
+\begin{table}[!ht]
+  \centering
+  \caption{Options for the \texttt{\textbackslash axisTwo} command}
+  \vspace{-10pt}
+  \begin{tabular}{r p{9cm} |c}\toprule
+    Option & Description & default \\\midrule
+    \texttt{size}  & defines the size of the axis (length of one arrow) & \textbf{30pt}                                              \\
+    \texttt{position} & (tuple) defines the position of the support & \textbf{\{0,0\}}          \\
+    \texttt{rotate} & rotation in degrees (counterclockwise) & \textbf{0}\\\bottomrule
+  \end{tabular}
+  \label{tab:axisTwoOptions}
+\end{table}
+\vspace{-10pt}
+
+\subsection{\textbackslash axisTwoRot}
+\label{subsec:axisTwoRot}
+This commands allows to draw a two-dimensional axis, where the name of each of the perpendicular directions must be given by the user. It is useful when one needs to specify the degrees of freedom (dof) of a system or part of a system, when a rotational dof is involved.\par
+
+\noindent\begin{minipage}{.4\textwidth}
+  \centering
+  \vspace{10pt}
+  \begin{tikzpicture}
+    \axisTwoRot[]{4}{2}{3}
+  \end{tikzpicture}
+  \label{fig:axistworot}
+    \captionof{figure}{2D axis with rotation dof.}
+\end{minipage}%
+\begin{minipage}[c]{.6\textwidth}
+  \vspace{10pt}
+  \begin{lstlisting}[firstnumber=1, label=axisTwoRotExampleCode]
+\begin{tikzpicture}
+  \axisTwoRot[]{1}{2}{3}
+\end{tikzpicture}
+  \end{lstlisting}
+\end{minipage}
+
+\begin{table}[!ht]
+  \centering
+  \vspace{-10pt}
+  \caption{Options for the \texttt{\textbackslash axisTwoRot} command}
+  \begin{tabular}{r p{9cm} |c}\toprule
+    Option & Description & default \\\midrule
+    \texttt{size}  & defines the size of the axis (length of one arrow) & \textbf{30pt}                                              \\
+    \texttt{position} & (tuple) defines the position of the support & \textbf{\{0,0\}}          \\
+    \texttt{rotate} & rotation in degrees (counterclockwise) & \textbf{0}\\\bottomrule
+  \end{tabular}
+  \label{tab:axisTwoRotOptions}
+\end{table}
+\vspace{-10pt}
+
+
+\subsection{\textbackslash Support}
 \label{subsec:support}
 This command is used to generate different types of supports, like fixed, pinned or sliding supports. They can also be rotated.\par
 
 \noindent\begin{minipage}{.4\textwidth}
   \centering
+  \vspace{10pt}
     \begin{tikzpicture}[scale=1.0]
       \Support[width = 1cm, type=fixed]
       \Support[position={2cm,0cm}, angle=0, width = 1cm, type=fixedsliding]
@@ -87,6 +174,7 @@ This command is used to generate different types of supports, like fixed, pinned
     \captionof{figure}{Types of supports available.}
 \end{minipage}%
 \begin{minipage}[c]{.6\textwidth}
+  \vspace{10pt}
   \begin{lstlisting}[firstnumber=1, label=supportExampleCode]
 \begin{tikzpicture}[scale=1.0]
   \Support[width = 1cm, type=fixed]
@@ -103,7 +191,8 @@ This command is used to generate different types of supports, like fixed, pinned
 \begin{table}[!ht]
   \centering
   \caption{Options for the \texttt{\textbackslash Support} command}
-  \begin{tabular}{l p{9cm} |c}\toprule
+\vspace{-10pt}
+  \begin{tabular}{r p{9cm} |c}\toprule
     Option & Description & default \\\midrule
     \texttt{width}  & defines the width of the support & \textbf{1cm}                                              \\
     \texttt{position} & (tuple) defines the position of the support & \textbf{\{0,0\}}          \\
@@ -114,7 +203,8 @@ This command is used to generate different types of supports, like fixed, pinned
 \end{table}
 
 
-\subsection{\texttt{\textbackslash MassWithSpring} command}
+\subsection{\textbackslash MassWithSpring}
+\label{subsection:MassWithSpring}
 This command draws a typical mass-spring system. It supports also an optional damper and displacement. The basic behavior of this command is shown in fig. \ref{fig:MassWithSpring}. \par
 
 \noindent\begin{minipage}{.4\textwidth}
@@ -132,6 +222,21 @@ This command draws a typical mass-spring system. It supports also an optional da
   \end{tikzpicture}
   \end{lstlisting}
 \end{minipage}
+%---Table----
+\begin{table}[!ht]
+  \centering
+  \caption{Options for the \texttt{\textbackslash MassWithSpring} command}
+\vspace{-10pt}
+  \begin{tabular}{r p{9cm} |c}\toprule
+    Option & Description & default \\\midrule
+    \texttt{position} & (tuple) defines the position of the support & \textbf{\{0,0\}}          \\
+    \texttt{displacement} & defines the displacement of the mass. Positive as well as negative values are accepted. & \textbf{0}          \\
+    \texttt{with damper} & boolean variable. Defines if the system should have a damper. & \textbf{false} \\
+    \texttt{with wall} & boolean variable. Specifies if the wall should be drawn.  & \textbf{true}\\\bottomrule
+  \end{tabular}
+  \label{tab:supportOptions}
+\end{table}
+
 
 In many situations we would like to describe more interesting systems. This can be achieved applying the optional key values and using the command multiple times, as shown in fig \ref{fig:MassWithSpring2}. As it can bee seen, creating this kind of drawings is very easy and straightforward.\\
 \begin{figure}[!ht]
@@ -156,7 +261,8 @@ In many situations we would like to describe more interesting systems. This can 
 \end{lstlisting}
 
 
-\subsection{\texttt{\textbackslash Frame} command}
+\subsection{\textbackslash Frame}
+\label{subsection:Frame}
 Thus command draws a frame with its mass concentrated above. It is a very common model to describe later a multi-story building in 2D. This command has many options, useful to change the displacement, position, use of supports, damper, among others. In the fig. \ref{fig:frame1} can be seen the normal output of the command without any options.\par
 
 \noindent\begin{minipage}{.4\textwidth}
@@ -178,7 +284,7 @@ Thus command draws a frame with its mass concentrated above. It is a very common
 \begin{table}[!ht]
   \centering
   \caption{Options for the \texttt{\textbackslash Frame} command}
-  \begin{tabular}{l p{9cm} |c}\toprule
+  \begin{tabular}{r p{9cm} |c}\toprule
     Option & Description & default \\\midrule
     \texttt{height} & defines the height of the frame/story & \textbf{4cm}                                      \\
     \texttt{width}  & defines de width of the frame & \textbf{4cm}                                              \\
@@ -191,7 +297,7 @@ Thus command draws a frame with its mass concentrated above. It is a very common
   \label{tab:frameOptions}
 \end{table}
 
-As with the \texttt{\textbackslash MassWithSpring} command, we can create more complex structures, and even add some displacement to it or add a tuned mass damper on the top (why not?). This can be seen on fig. \ref{fig:frame2}.\par
+As with the \hyperref[subsection:MassWithSpring]{\texttt{\textbackslash MassWithSpring}} command, we can create more complex structures, and even add some displacement to it or add a tuned mass damper on the top (why not?). This can be seen on fig. \ref{fig:frame2}.\par
 
 \noindent\begin{minipage}{.35\textwidth}
   \centering
@@ -205,7 +311,7 @@ As with the \texttt{\textbackslash MassWithSpring} command, we can create more c
   \label{fig:frame2}
 \end{minipage}%
 \begin{minipage}[c]{.65\textwidth}
-  \begin{lstlisting}[firstnumber=1, label=frameExampleCode2]
+  \begin{lstlisting}[firstnumber=1, label=FrameExampleCode2]
 \begin{tikzpicture}[scale=0.7]
   \Frame[position = {0em,0em}, displacement=0.07cm]
   \Frame[position = {0.07cm,4cm}, with support=false, displacement=0.7cm]
@@ -216,8 +322,9 @@ As with the \texttt{\textbackslash MassWithSpring} command, we can create more c
 \end{minipage}
 
 
-\subsection{\texttt{\textbackslash FrameSimple} command}
-The \texttt{\textbackslash Frame} command is best suited for dynamic systems, so when we want to draw a frame for other purposes, we should use this command. It creates a nice frame with bars, whose support's type can be changed. It also allows to vary its dimensions (width and hight) and makes possible to move each degree of freedom separately\footnote{Not yet implemented}.\par
+\subsection{\textbackslash FrameSimple}
+\label{subsection:FrameSimple}
+The \hyperref[subsection:Frame]{\texttt{\textbackslash Frame}} command is best suited for dynamic systems, so when we want to draw a frame for other purposes, we should use this command. It creates a nice frame with bars, whose support's type can be changed. It also allows to vary its dimensions (width and hight) and makes possible to move each degree of freedom separately.\par
 
 \noindent\begin{minipage}{.4\textwidth}
   \centering
@@ -247,7 +354,7 @@ The \texttt{\textbackslash Frame} command is best suited for dynamic systems, so
 \begin{table}[!ht]
   \centering
   \caption{Options for the \texttt{\textbackslash FrameSimple} command}
-  \begin{tabular}{l p{9cm} |c}\toprule
+  \begin{tabular}{r p{9cm} |c}\toprule
     Option & Description & default \\\midrule
     \texttt{width}  & defines the width of the frame & \textbf{4cm}\\
     \texttt{height} & defines the height of the frame & \textbf{4cm}\\
@@ -275,9 +382,10 @@ The \texttt{\textbackslash Frame} command is best suited for dynamic systems, so
 \end{figure}
 
 \chapter{Drawings for the Geomechanics}
+This chapter presents the commands dedicated to facilitate the creation of drawings for the geomechanics. Like in the previous chapter, every command will be presented with an example and with the description of the options that can be passed to the command.\par
 \section{Commands}
 
-\subsection{\texttt{\textbackslash RetainingWall} command}
+\subsection{\textbackslash RetainingWall}
 Description.\par
 
 \noindent\begin{minipage}{.4\textwidth}
@@ -296,7 +404,9 @@ Description.\par
   \end{lstlisting}
 \end{minipage}
 
-\subsection{\texttt{\textbackslash GravityWall} command}
+\subsection{\textbackslash GravityWall}
+\label{subsection:GravityWall}
+Description.\par
 
 \noindent\begin{minipage}{.4\textwidth}
   \centering
@@ -308,7 +418,7 @@ Description.\par
   \label{fig:GravityWall1}
 \end{minipage}%
 \begin{minipage}[c]{.6\textwidth}
-  \begin{lstlisting}[firstnumber=1, label=RetainingWallExampleCode]
+  \begin{lstlisting}[firstnumber=1, label=GravityWallExampleCode]
 \begin{tikzpicture}[scale=1]
 \GravityWall[fill color=black!20, beta=20, left ground=true, right ground=true, left ground height=1cm]
 \end{tikzpicture}
