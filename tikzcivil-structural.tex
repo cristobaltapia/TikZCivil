@@ -23,19 +23,46 @@
 %
 %This file contains all the commands related to the structural analysis.
 %
+%--------------- Definition of command \axisTwo -------------------------------%
+%Defines an axis with two perpendicular directions. This is
+%intended to be used in the description of degrees of freedom or to define
+%the coordinate system of a drawing.
+%------------------------------------------------------------------------------%
+%
+\pgfkeys{
+  /civil/axistwo/.is family, /civil/axistwo,
+  default/.style = {
+    position = {0cm,0cm}, rotate = 0,
+    size = 30pt,
+  },
+  position/.store in = \axisPosition,
+  rotate/.store in = \axisAngle,
+  size/.store in = \axisSize,
+}
+
+\newcommand\axisTwo[3][]{%
+  \pgfkeys{/civil/axistwo, default, #1,}%
+  \coordinate (p0) at (\axisPosition) {};
+  \node (px) at ([xshift=\axisSize]p0) {#2};
+  \node (py) at ([yshift=\axisSize]p0) {#3};
+  %Axis will be drawn
+  \draw [->, thick] (p0) -- (px);
+  \draw [->, thick] (p0) -- (py);
+}
+
+
 %--------------- Definition of command \axisTwoRot ----------------------------%
-%Defines an axis with two perpendicular directions and one rotation. This is
-%intended to be used in the description of degrees of freedom.
+%Similar to de \axisTwo command, but with a rotation degree of freedom.
 %------------------------------------------------------------------------------%
 %
 \pgfkeys{
   /civil/axistworot/.is family, /civil/axistworot,
   default/.style = {
-    position = {0cm,0cm}, angle = 0,
+    position = {0cm,0cm}, rotate = 0,
     size = 30pt,
   },
   position/.store in = \axisPosition,
-  angle/.store in = \axisAngle,
+  rotate/.store in = \axisAngle,
   size/.store in = \axisSize,
 }
 \newcommand\axisTwoRot[4][]{%
