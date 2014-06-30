@@ -9,5 +9,5 @@ With this packages you are able to draw frames, retaining walls or many other ty
 ##1.1. Linux:
 To install this package on a Linux system, you only need to run the installer located in the "_Instal.sh_" file. It will place the needed files in a texmf directory on your $HOME folder. Then it will update the latex database with texhash.
 
-##1.2. Windows:
-I don't use windows with latex too much, and I don't know how to program an installation script in windows :S . But that shouldn't be a big problem. All you have to do is put the **_.tex_** and **_.sty_** files where all the other latex packages are. Then update the database of latex.
+##1.2. Windows 7:
+To install this package in Windows 7 you need to run the python script "Install_Win7.py". This will copy the needed files to the texmf directory in the user folder (~texmf). It will then update the tex database with "_initexmf_". Remember to add the folder to your Miktex root-dir list.

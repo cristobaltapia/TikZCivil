@@ -234,7 +234,7 @@ This command draws a typical mass-spring system. It supports also an optional da
     \texttt{with damper} & boolean variable. Defines if the system should have a damper. & \textbf{false} \\
     \texttt{with wall} & boolean variable. Specifies if the wall should be drawn.  & \textbf{true}\\\bottomrule
   \end{tabular}
-  \label{tab:massSpringOptions}
+  \label{tab:MassWithSpringOptions}
 \end{table}
 
 
@@ -242,7 +242,7 @@ In many situations we would like to describe more interesting systems. This can 
 \begin{figure}[!ht]
   \centering
   \begin{tikzpicture}[scale=1]
-    \MassWithSpring[displacement = 2em, with damper = true]
+    \MassWithSpring[displacement = 2em, with damper]
     \MassWithSpring[displacement = -1em,  with wall = false, position = {10.5em,0em}]
     \MassWithSpring[displacement = 3em,  with wall = false, position = {18.0em,0em}]
   \end{tikzpicture}
@@ -252,7 +252,7 @@ In many situations we would like to describe more interesting systems. This can 
 
 \begin{lstlisting}[firstnumber=1]
 \begin{tikzpicture}[scale=1]
-  \MassWithSpring[displacement = 2em, with damper = true]
+  \MassWithSpring[displacement = 2em, with damper]
   \MassWithSpring[displacement = -1em,  with wall = false, position = {10.5em,0em}]
   \MassWithSpring[displacement = 3em,  with wall = false, position = {18.0em,0em}]
 \end{tikzpicture}
@@ -261,7 +261,7 @@ In many situations we would like to describe more interesting systems. This can 
 
 \subsection{\textbackslash Frame}
 \label{subsection:Frame}
-Thus command draws a frame with its mass concentrated above. It is a very common model to describe later a multi-story building in 2D. This command has many options, useful to change the displacement, position, use of supports, damper, among others. In the fig. \ref{fig:frame1} can be seen the normal output of the command without any options.\par
+This command draws a frame with its mass concentrated above. It is a very common model to describe later a multi-story building in 2D. This command has many options, useful to change the displacement, position, use of supports, damper, among others. In the fig. \ref{fig:frame1} can be seen the normal output of the command without any options.\par
 
 \noindent\begin{minipage}{.4\textwidth}
   \centering
@@ -306,7 +306,7 @@ As with the \hyperref[subsection:MassWithSpring]{\texttt{\textbackslash MassWith
     \Frame[position = {0em,0em}, displacement=0.07cm]
     \Frame[position = {0.07cm,4cm}, with support=false, displacement=0.7cm, with damper=true]
     \Frame[position = {0.77cm,8cm}, with support=false, displacement=1.7cm]
-    \MassWithSpring[position={2.8cm,12cm}, with damper=true]
+    \MassWithSpring[position={2.8cm,12cm}, with damper]
   \end{tikzpicture}
   \captionof{figure}{A set of frames put one above he other.}
   \label{fig:frame2}
