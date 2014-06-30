@@ -221,11 +221,14 @@
 %
 \pgfkeys{
   /civil/massWithSpring/.is family, /civil/massWithSpring,
-  with damper/.is if = damper,
+  draw damper/.is if = damper,
   with wall/.is if = wall,
   defaultMass/.style = {
     position = {0em,0em}, displacement = 0em,
-    with damper = false, with wall = true,
+    with wall = true, draw damper = false,
+  },
+  with damper/.style = {
+    draw damper = true,
   },
   position/.store in = \massPosition,
   displacement/.store in = \massDisplacement,
