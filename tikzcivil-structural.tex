@@ -32,12 +32,13 @@
 \pgfkeys{
   /civil/axistwo/.is family, /civil/axistwo,
   default/.style = {
-    position = {0cm,0cm}, rotate = 0,
-    size = 30pt,
+    position = {0cm,0cm},
+    rotate   = 0,
+    size     = 30pt,
   },
   position/.store in = \axisPosition,
-  rotate/.store in = \axisAngle,
-  size/.store in = \axisSize,
+  rotate/.store in   = \axisAngle,
+  size/.store in     = \axisSize,
 }
 
 \newcommand\axisTwo[3][]{%
@@ -120,17 +121,19 @@
 \pgfkeys{
   /civil/supports/.is family, /civil/supports,
   default/.style = {
-    position = {0cm,0cm}, angle = 0,
-    type = fixed, width = 1cm,
+    position = {0cm,0cm},
+    angle    = 0,
+    type     = fixed,
+    width    = 1cm,
   },
   type/.is choice,
-  type/fixed/.code = {\activatefixed},
-  type/pinned/.code = {\activatepinned},
-  type/sliding/.code = {\activatesliding},
+  type/fixed/.code        = {\activatefixed},
+  type/pinned/.code       = {\activatepinned},
+  type/sliding/.code      = {\activatesliding},
   type/fixedsliding/.code = {\activatefixedsliding},
-  position/.store in = \supportPosition,
-  angle/.store in = \supportAngle,
-  width/.store in = \supportWidth,
+  position/.store in      = \supportPosition,
+  angle/.store in         = \supportAngle,
+  width/.store in         = \supportWidth,
 }
 %--------Definition of the command begins-------------------------------------%
 \newcommand\Support[1][]{%
@@ -222,15 +225,17 @@
 \pgfkeys{
   /civil/massWithSpring/.is family, /civil/massWithSpring,
   draw damper/.is if = damper,
-  with wall/.is if = wall,
+  with wall/.is if   = wall,
   defaultMass/.style = {
-    position = {0em,0em}, displacement = 0em,
-    with wall = true, draw damper = false,
+    position     = {0em,0em},
+    displacement = 0em,
+    with wall    = true,
+    draw damper  = false,
   },
   with damper/.style = {
     draw damper = true,
   },
-  position/.store in = \massPosition,
+  position/.store in     = \massPosition,
   displacement/.store in = \massDisplacement,
 }
 %
@@ -281,19 +286,22 @@
 %
 \pgfkeys{
   /civil/frame/.is family, /civil/frame,
-  with damper/.is if = damper,
+  with damper/.is if  = damper,
   with support/.is if = support,
   defaultFrame/.style = {
-    height = 4cm, width = 4cm,
-    position = {0em,0em}, displacement = 0em,
-    with damper = false, with support = true,
+    height         = 4cm,
+    width          = 4cm,
+    position       = {0em,0em},
+    displacement   = 0em,
+    with damper    = false,
+    with support   = true,
     mass thickness = 0.5cm,
   },
-  height/.store in = \frameHeight,%Story height
-  width/.store in = \frameWidth,%frame width
+  height/.store in         = \frameHeight,%Story height
+  width/.store in          = \frameWidth,%frame width
   mass thickness/.store in = \massThickness,%thickness of the floor
-  position/.store in = \framePosition,%position of the left support
-  displacement/.store in = \frameDisplacement,%horizontal displacement at the top
+  position/.store in       = \framePosition,%position of the left support
+  displacement/.store in   = \frameDisplacement,%horizontal displacement at the top
 }
 %
 \newcommand{\Frame}[1][]{%
@@ -338,36 +346,40 @@
 %Each of them can be moved independently.
 \pgfkeys{
   /civil/frameSimple/.is family, /civil/frameSimple,
-  with damper/.is if = damper,
+  with damper/.is if  = damper,
   with support/.is if = support,
   defaultFrame/.style = {
-    height = 4cm, width = 4cm,
-    position = {0em,0em}, displacement = 0em,
-    with damper = false, with support = true,
+    height         = 4cm,
+    width          = 4cm,
+    position       = {0em,0em},
+    displacement   = 0em,
+    with damper    = false,
+    with support   = true,
     mass thickness = 0.5cm,
-    left support = fixed, right support = fixed,
+    left support   = fixed,
+    right support  = fixed,
     %Default values for each dof
     dof1=0, dof2=0, dof3=0,
     dof4=0, dof5=0, dof6=0,
     dof7=0, dof8=0, dof9=0,
     dof10=0, dof11=0, dof12=0,
   },
-  height/.store in = \frameHeight,%Story height
-  width/.store in = \frameWidth,%frame width
+  height/.store in         = \frameHeight,%Story height
+  width/.store in          = \frameWidth,%frame width
   mass thickness/.store in = \massThickness,%thickness of the floor
-  position/.store in = \framePosition,%position of the left support
-  displacement/.store in = \frameDisplacement,%horizontal displacement at the top
-  left support/.store in = \leftSupport,
-  right support/.store in = \rightSupport,
-  dof1/.store in = \dofOne,
-  dof2/.store in = \dofTwo,
-  dof3/.store in = \dofThree,
-  dof4/.store in = \dofFour,
-  dof5/.store in = \dofFive,
-  dof6/.store in = \dofSix,
-  dof7/.store in = \dofSeven,
-  dof8/.store in = \dofEight,
-  dof9/.store in = \dofNine,
+  position/.store in       = \framePosition,%position of the left support
+  displacement/.store in   = \frameDisplacement,%horizontal displacement at the top
+  left support/.store in   = \leftSupport,
+  right support/.store in  = \rightSupport,
+  dof1/.store in  = \dofOne,
+  dof2/.store in  = \dofTwo,
+  dof3/.store in  = \dofThree,
+  dof4/.store in  = \dofFour,
+  dof5/.store in  = \dofFive,
+  dof6/.store in  = \dofSix,
+  dof7/.store in  = \dofSeven,
+  dof8/.store in  = \dofEight,
+  dof9/.store in  = \dofNine,
   dof10/.store in = \dofTen,
   dof11/.store in = \dofEleven,
   dof12/.store in = \dofTwelve,
@@ -417,4 +429,83 @@
   \fi
 %
 }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Timber constructions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% The following drowings are related to timber structures.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Beams with holes
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Beams with holes, as described in the german code DIN 1052
+%
+%Conditionals are defined
+\newif\ifleftsupport
+\newif\ifrightsupprt
+\newif\ifhole
+%pgfkeys are defined
+\pgfkeys{
+  /civil/timberBeam/.is family, /civil/timberBeam,
+  with support/.is if       = support,
+  with hole/.is if          = hole,
+  draw left supprt/.is if   = leftsupport,
+  draw right support/.is if = rightsupport,
+  defaultTimberBeam/.style = {
+    height        = 4cm,
+    width         = 8cm,
+    position      = {0cm,0cm},
+    with support  = true,
+    left support  = pinned,
+    right support = pinned,
+    hole position = center,
+    with hole     = false,
+  },
+  with left support/.style = {
+    draw left support = true,
+  },
+  with right supprt/.style = {
+    draw right support = true,
+  },
+  hole position/.is choice,
+  hole position/center/.style = {
+    hole position x = \beamWidth/2,
+    hole position y = \beamHeight/2,
+  },
+  hole position/right/.style = {
+    hole position x = \beamHeight - \holeDiameter,
+    hole position y = \beamHeight/2,
+  },
+  hole position x/.store in = \holePosX,
+  hole position y/.store in = \holePosY,
+  height/.store in          = \beamHeight,%Story height
+  width/.store in           = \beamWidth,%frame width
+  position/.store in        = \beamPosition,%position of the left support
+  left support/.store in    = \leftSupport,  %type of support
+  right support/.store in   = \rightSupport,
+}
+%
+%Definition of the command
+\newcommand{\TimberBeam}[1][]{%
+  \pgfkeys{/civil/timberBeam, defaultTimberBeam, #1}%
+  %Definition of coordinates of the nodes
+  \coordinate (p0) at (\beamPosition) {};
+  \coordinate (p1) at ([shift={(\beamWidth,0)}]p0) {};
+  \coordinate (p2) at ([shift={(\beamWidth,\beamHeight)}]p0) {};
+  \coordinate (p3) at ([shift={(0,\beamHeight)}]p0) {};
+  %Center of the hole
+  \coordinate (p4) at ([shift={(\holePosX,\holePosY)}]p0) {};
+  %Draw beam:
+  \draw (p0) -- (p1);
+  \draw (p1) -- (p2);
+  \draw (p2) -- (p3);
+  \draw (p3) -- (p0);
+  %Supports are drawn
+  \ifsupport
+    \Support[position = p0, type=\leftSupport];
+    \Support[position = p1, type=\rightSupport];
+  \fi
+%
+}
+
 \endinput
