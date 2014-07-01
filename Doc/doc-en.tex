@@ -265,6 +265,7 @@ This command draws a frame with its mass concentrated above. It is a very common
 
 \noindent\begin{minipage}{.4\textwidth}
   \centering
+  \vspace{10pt}
   \begin{tikzpicture}[scale=1]
     \Frame[with damper=true]
   \end{tikzpicture}
@@ -282,6 +283,7 @@ This command draws a frame with its mass concentrated above. It is a very common
 \begin{table}[!ht]
   \centering
   \caption{Options for the \texttt{\textbackslash Frame} command}
+  \vspace{-10pt}
   \begin{tabular}{r p{9cm} |c}\toprule
     Option & Description & default \\\midrule
     \texttt{height} & defines the height of the frame/story & \textbf{4cm}                                      \\
@@ -299,7 +301,8 @@ As with the \hyperref[subsection:MassWithSpring]{\texttt{\textbackslash MassWith
 
 \noindent\begin{minipage}{.35\textwidth}
   \centering
-  \begin{tikzpicture}[scale=0.7]
+  \vspace{10pt}
+  \begin{tikzpicture}[scale=0.6]
     \Frame[position = {0em,0em}, displacement=0.07cm]
     \Frame[position = {0.07cm,4cm}, with support=false, displacement=0.7cm, with damper=true]
     \Frame[position = {0.77cm,8cm}, with support=false, displacement=1.7cm]
