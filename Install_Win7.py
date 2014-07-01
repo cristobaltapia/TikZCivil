@@ -15,11 +15,11 @@ def main():
             'tikzcivil.sty']
 
     #Create texmf folder if it doesn't exists
-    texdir = os.path.expanduser('~texmf/tex/latex')
+    texdir = os.path.expanduser('~texmf/tex/latex/tikzcivil')
     ensure_dir(texdir)
 
     for i in range(3):
-        dstdir = os.path.expanduser(os.path.join('~texmf/tex/latex', files[i]))
+        dstdir = os.path.expanduser(os.path.join('~texmf/tex/latex/tikzcivil', files[i]))
         shutil.copy(files[i], dstdir)
         print(files[i] + ' copied to ' + texdir)
 
