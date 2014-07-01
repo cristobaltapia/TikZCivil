@@ -459,6 +459,7 @@
     left support  = pinned,
     right support = pinned,
     hole position = center,
+    hole diameter = 1.2cm,
     with hole     = false,
   },
   with left support/.style = {
@@ -473,15 +474,20 @@
     hole position y = \beamHeight/2,
   },
   hole position/right/.style = {
-    hole position x = \beamHeight - \holeDiameter,
+    hole position x = \beamWidth - \holeDiameter,
+    hole position y = \beamHeight/2,
+  },
+  hole position/left/.style = {
+    hole position x = \holeDiameter,
     hole position y = \beamHeight/2,
   },
   hole position x/.store in = \holePosX,
   hole position y/.store in = \holePosY,
+  hole diameter/.store in   = \holeDiameter,
   height/.store in          = \beamHeight,%Story height
   width/.store in           = \beamWidth,%frame width
   position/.store in        = \beamPosition,%position of the left support
-  left support/.store in    = \leftSupport,  %type of support
+  left support/.store in    = \leftSupport,  %type of support: fixed, pinned, etc
   right support/.store in   = \rightSupport,
 }
 %
@@ -500,6 +506,10 @@
   \draw (p1) -- (p2);
   \draw (p2) -- (p3);
   \draw (p3) -- (p0);
+  %Draw Hole:
+  \ifhole
+    \draw (p4) circle (\holeDiameter/2);
+  \fi
   %Supports are drawn
   \ifsupport
     \Support[position = p0, type=\leftSupport];
