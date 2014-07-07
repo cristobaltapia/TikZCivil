@@ -29,7 +29,10 @@
 \RequirePackage{fp}
 %
 %Here are the tikz options that are going to be used in this package.
-\usetikzlibrary{calc,arrows,shapes,positioning,shadows,trees,patterns,decorations.pathmorphing,decorations.markings}
+\usetikzlibrary{calc,arrows,shapes,positioning,
+                shadows,trees,patterns,decorations.pathmorphing,
+                decorations.markings
+}
 \tikzset{
   ground/.style={draw=black,text width=10em,line width=0.1em,pattern = north east lines},
   soil style/.style={draw=none,line width=1pt, color=white, fill,
@@ -41,6 +44,7 @@
       amplitude=0.5em,coil},
     decorate},
   line wall/.style={color=black, line width=1pt, fill=white},
+  line normal/.style={color=black, line width=1pt},
   thrust/.style={triangle 90 cap, line width=2pt},
   frame element/.style={color=black, line width=2pt},
   flecha/.style={thick,<->},
@@ -54,7 +58,29 @@
     }
   }, decorate},
 }
-
+%Define style for the dimensions
+\tikzset{
+  dim above/.style={to path={\pgfextra{
+        \pgfinterruptpath
+        \draw[>=latex,|<->|] let
+        \p1=($(\tikztostart)!2mm!90:(\tikztotarget)$),
+        \p2=($(\tikztotarget)!2mm!-90:(\tikztostart)$)
+        in(\p1) -- (\p2) node[pos=.5,sloped,above]{#1};
+        \endpgfinterruptpath
+      }\tikztonodes
+    }
+  },
+  dim below/.style={to path={\pgfextra{
+        \pgfinterruptpath
+        \draw[>=latex,|<->|] let 
+        \p1=($(\tikztostart)!2mm!90:(\tikztotarget)$),
+        \p2=($(\tikztotarget)!2mm!-90:(\tikztostart)$)
+        in (\p1) -- (\p2) node[pos=.5,sloped,below]{#1};
+        \endpgfinterruptpath
+      }\tikztonodes
+    }
+  },
+}
 %Calculate angle between two coordinates
 % #1: name of the variable wher the value will be stored
 % #2: coordinate 1
