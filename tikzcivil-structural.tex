@@ -436,31 +436,33 @@
 % The following drowings are related to timber structures.
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Beams with holes
+% Beams
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Beams with holes, as described in the german code DIN 1052
 %
 %Conditionals are defined
 \newif\ifleftsupport
-\newif\ifrightsupprt
-\newif\ifhole
+\newif\ifrightsupport
+\newif\ifcutleft
+\newif\ifcutright
 %pgfkeys are defined
 \pgfkeys{
-  /civil/timberBeam/.is family, /civil/timberBeam,
+  /civil/Beam/.is family, /civil/Beam,
   with support/.is if       = support,
-  with hole/.is if          = hole,
-  draw left supprt/.is if   = leftsupport,
+  draw left support/.is if  = leftsupport,
   draw right support/.is if = rightsupport,
-  defaultTimberBeam/.style = {
-    height        = 4cm,
-    width         = 8cm,
-    position      = {0cm,0cm},
-    with support  = true,
-    left support  = pinned,
-    right support = pinned,
-    hole position = center,
-    hole diameter = 1.2cm,
-    with hole     = false,
+  cut right edge/.is if     = cutright,
+  cut left edge/.is if      = cutleft,
+  defaultBeam/.style = {
+    height             = 4cm,
+    width              = 8cm,
+    position           = {0cm,0cm},
+    with support       = false,
+    draw left support  = false,
+    draw right support = false,
+    left support       = pinned,
+    right support      = pinned,
+    cut right edge     = false,
+    cut left edge      = false,
   },
   with left support/.style = {
     draw left support = true,
@@ -468,52 +470,53 @@
   with right supprt/.style = {
     draw right support = true,
   },
-  hole position/.is choice,
-  hole position/center/.style = {
-    hole position x = \beamWidth/2,
-    hole position y = \beamHeight/2,
+  cut right/.style = {
+    cut right edge = true,
   },
-  hole position/right/.style = {
-    hole position x = \beamWidth - \holeDiameter,
-    hole position y = \beamHeight/2,
+  cut left/.style = {
+    cut left edge = true,
   },
-  hole position/left/.style = {
-    hole position x = \holeDiameter,
-    hole position y = \beamHeight/2,
+  height/.store in        = \beamHeight,%Story height
+  width/.store in         = \beamWidth,%frame width
+  position/.store in      = \beamPosition,%position of the left support
+  left support/.store in  = \leftSupport,  %type of support: fixed, pinned, etc
+  right support/.store in = \rightSupport,
+  line properties/.style  = {
   },
-  hole position x/.store in = \holePosX,
-  hole position y/.store in = \holePosY,
-  hole diameter/.store in   = \holeDiameter,
-  height/.store in          = \beamHeight,%Story height
-  width/.store in           = \beamWidth,%frame width
-  position/.store in        = \beamPosition,%position of the left support
-  left support/.store in    = \leftSupport,  %type of support: fixed, pinned, etc
-  right support/.store in   = \rightSupport,
 }
 %
 %Definition of the command
-\newcommand{\TimberBeam}[1][]{%
-  \pgfkeys{/civil/timberBeam, defaultTimberBeam, #1}%
+\newcommand{\Beam}[1][]{%
+  \pgfkeys{/civil/Beam, defaultBeam, #1}%
   %Definition of coordinates of the nodes
   \coordinate (p0) at (\beamPosition) {};
   \coordinate (p1) at ([shift={(\beamWidth,0)}]p0) {};
   \coordinate (p2) at ([shift={(\beamWidth,\beamHeight)}]p0) {};
   \coordinate (p3) at ([shift={(0,\beamHeight)}]p0) {};
-  %Center of the hole
-  \coordinate (p4) at ([shift={(\holePosX,\holePosY)}]p0) {};
   %Draw beam:
-  \draw (p0) -- (p1);
-  \draw (p1) -- (p2);
-  \draw (p2) -- (p3);
-  \draw (p3) -- (p0);
-  %Draw Hole:
-  \ifhole
-    \draw (p4) circle (\holeDiameter/2);
+  \filldraw[line normal, fill=black!0, /civil/Beam/line properties] (p0) -- (p1)
+  \ifcutright
+    to[out=60,in=-120] (p2)
+  \else
+     -- (p2)
+  \fi
+   -- (p3)
+  \ifcutleft
+    to[out=-120,in=60] (p0);
+  \else
+    -- (p0);
   \fi
   %Supports are drawn
   \ifsupport
     \Support[position = p0, type=\leftSupport];
     \Support[position = p1, type=\rightSupport];
+  \else
+    \ifleftsupport
+      \Support[position = p0, type=\leftSupport];
+    \fi
+    \ifrightsupport
+      \Support[position = p1, type=\rightSupport];
+    \fi
   \fi
 %
 }
