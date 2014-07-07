@@ -433,13 +433,15 @@ Description.\par
 
 \section{Commands}
 
-\subsection{\textbackslash TimberBeam}
+\subsection{\textbackslash Beam}
 Test test tes\\
 
 \noindent\begin{minipage}{.6\textwidth}
   \centering
   \begin{tikzpicture}[scale=1]
-    \TimberBeam[with hole=true, draw left support=false]
+    \Beam[width=6cm, height=4cm]
+    \RectHole[width=2cm, height=2cm, corner r=0.3cm,
+              position={3cm,2cm},line properties/.style={line width=1pt}]
   \end{tikzpicture}
   \captionof{figure}{Timber Beam}
   \label{fig:TimberBeam}
@@ -447,7 +449,9 @@ Test test tes\\
 \begin{minipage}[c]{.4\textwidth}
   \begin{lstlisting}[firstnumber=1, label=TimberBeamExampleCode]
 \begin{tikzpicture}[scale=1]
-  \TimberBeam[]
+  \Beam[width=6cm, height=4cm]
+  \RectHole[width=2cm, height=2cm, hole r=0.3cm,
+            position={3cm,2cm},line properties/.style={line width=1pt}]
 \end{tikzpicture}
   \end{lstlisting}
 \end{minipage}
