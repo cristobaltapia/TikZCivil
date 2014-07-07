@@ -521,4 +521,53 @@
 %
 }
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Rectangular holes with rounded corners
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Beams with holes, as described in the german code DIN 1052
+%
+%pgfkeys are defined
+\pgfkeys{
+  /civil/rectHole/.is family, /civil/rectHole,
+  defaultRectHole/.style = {
+    height   = 3cm,
+    width    = 3cm,
+    corner r = 0.5cm,
+    position = {0cm,0cm},
+  },
+  position/.store in = \holePosition,
+  corner r/.store in = \holer,
+  width/.store in    = \width,
+  height/.store in   = \height,
+  line properties/.style = {
+    line width=1pt,
+  },
+}
+%
+%Definition of the command
+\newcommand{\RectHole}[1][]{%
+  \pgfkeys{/civil/rectHole, defaultRectHole, #1}%
+  %Definition of coordinates of the nodes
+  %Center of the hole
+\coordinate (p4) at (\holePosition) {};
+  %Position of other nodes
+  \coordinate (p5) at ([shift={(-\width/2+\holer,  -\height/2)}]p4);
+  \coordinate (p6) at ([shift={(\width/2-\holer,   -\height/2)}]p4);
+  \coordinate (p7) at ([shift={(\width/2,          -\height/2+\holer)}]p4);
+  \coordinate (p8) at ([shift={(\width/2,          \height/2-\holer)}]p4);
+  \coordinate (p9) at ([shift={(\width/2-\holer,   \height/2)}]p4);
+  \coordinate (p10) at ([shift={(-\width/2+\holer, \height/2)}]p4);
+  \coordinate (p11) at ([shift={(-\width/2,        \height/2-\holer)}]p4);
+  \coordinate (p12) at ([shift={(-\width/2,        -\height/2+\holer)}]p4);
+  \filldraw[line normal, fill=white!0, /civil/rectHole/line properties]
+          (p5) to[out=0,in=180]
+          (p6) to[out=0,in=-90]
+          (p7) to[out=90,in=-90]
+          (p8) to[out=90,in=0]
+          (p9) to[out=180,in=0]
+          (p10) to[out=180,in=90]
+          (p11) to[out=-90,in=90]
+          (p12) to[out=-90,in=180] (p5);
+%
+}
 \endinput
