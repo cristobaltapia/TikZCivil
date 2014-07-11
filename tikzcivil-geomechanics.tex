@@ -51,6 +51,33 @@
   \end{scope}
   \pgftransformrotate{-\surfaceAngle}
 }
+%-------------\supportLines:----------------------------------------------------%
+%A command to draw a line between two points (coordinates) and draw some diagnal
+%lines beneth it. The idea is to use it beneath the supports.
+%------------------------------------------------------------------------------%
+% #1: coordinate 1
+% #2: coordinate 2
+%
+\newcommand\supportLines[3]{
+  \draw[thick] (#1) -- (#2);
+  \pgfextractangle{\surfaceAngle}{#1}{#2}
+  \pgftransformrotate{\surfaceAngle}
+  \begin{scope}
+    %    \clip (left) rectangle (right);
+    \clip (#1) rectangle ([yshift=-#3]#2);
+    \foreach \li in {0,#3/2,...,#3}{
+      \draw[line normal] ([shift={(\li,0)}]#1) -- +(-#3,-#3)
+      ++(#3/2,0) -- +(-#3,-#3)
+      ++(#3/2,0) -- +(-#3,-#3)
+      ++(#3/2,0) -- +(-#3,-#3)
+      ++(#3/2,0) -- +(-#3,-#3)
+      ++(#3/2,0) -- +(-#3,-#3)
+      ++(#3/2,0) -- +(-#3,-#3);
+    }
+    %\pgfresetboundingbox
+  \end{scope}
+  \pgftransformrotate{-\surfaceAngle}
+}
 %-------------\groundPoints:---------------------------------------------------%
 %A command to draw a line between two points (coordinates) and draw some
 %points beneath it, to signal the presence of the soil (sand for example)
