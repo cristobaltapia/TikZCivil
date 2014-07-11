@@ -157,13 +157,14 @@
     \coordinate (k4) at ([shift={(-\supportWidth*1/3,-\supportWidth*1/3)}]k1) {};
     \coordinate (k5) at ([shift={(\supportWidth*1/3,-\supportWidth*1/3)}]k1) {};
     %Triangle is drawn
-    \draw (k1) -- (k4) -- (k5) -- (k1);
-    %This are te coordinates for the lower-right point of the soil-rectangle
-    \coordinate (k6) at ([shift={(\supportWidth/2,-\supportWidth*2/3)}]k1) {};
+    \draw[line normal] (k1) -- (k4) -- (k5) -- (k1);
     %This are te coordinates for the upper-left point of the soil-rectangle
-    \coordinate (k7) at ([shift={(-\supportWidth/2,-\supportWidth*1/3)}]k1) {};
+    \coordinate (k6) at ([shift={(-\supportWidth/2,-\supportWidth*1/3)}]k1) {};
+    %This are te coordinates for the upper-right point of the soil-rectangle
+    \coordinate (k7) at ([shift={(\supportWidth/2,-\supportWidth*1/3)}]k1) {};
     %The rectangle for the soil is drawn
-    \filldraw[soil style] (k7) rectangle (k6);
+    %\filldraw[soil style] (k7) rectangle (k6);
+    \supportLines{k6}{k7}{\supportWidth/3};
     \pgftransformrotate{-\supportAngle}
   \fi
   %If the type of the support is pinned and sliding
@@ -467,7 +468,7 @@
   with left support/.style = {
     draw left support = true,
   },
-  with right supprt/.style = {
+  with right support/.style = {
     draw right support = true,
   },
   cut right/.style = {
@@ -507,15 +508,16 @@
     -- (p0);
   \fi
   %Supports are drawn
+  \newcommand\widthSupport{\beamHeight/4}
   \ifsupport
-    \Support[position = p0, type=\leftSupport];
-    \Support[position = p1, type=\rightSupport];
+    \Support[position = p0, type=\leftSupport, width=\widthSupport];
+    \Support[position = p1, type=\rightSupport, width=\widthSupport];
   \else
     \ifleftsupport
-      \Support[position = p0, type=\leftSupport];
+      \Support[position = p0, type=\leftSupport, width=\widthSupport];
     \fi
     \ifrightsupport
-      \Support[position = p1, type=\rightSupport];
+      \Support[position = p1, type=\rightSupport, width=\widthSupport];
     \fi
   \fi
 %
