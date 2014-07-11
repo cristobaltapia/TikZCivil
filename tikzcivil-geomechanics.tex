@@ -66,7 +66,7 @@
     %    \clip (left) rectangle (right);
     \clip (#1) rectangle ([yshift=-#3]#2);
     \foreach \li in {0,#3/2,...,#3}{
-      \draw[line normal] ([shift={(\li,0)}]#1) -- +(-#3,-#3)
+      \draw[thick] ([shift={(\li,0)}]#1) -- +(-#3,-#3)
       ++(#3/2,0) -- +(-#3,-#3)
       ++(#3/2,0) -- +(-#3,-#3)
       ++(#3/2,0) -- +(-#3,-#3)
@@ -214,7 +214,7 @@
   \coordinate (b4) at ([shift={(\baseWidth,\baseThickness)}]w1);
   \coordinate (b5) at ([xshift=\baseWidth]w1);
   %Wall is drawn
-  \filldraw[style=line wall, fill=\fillColor] (w1) -- (b1) -- (b2) -- 
+  \filldraw[style=line wall, fill=\fillColor] (w1) -- (b1) -- (b2) --
   (b3) -- (b4) -- (b5) -- (w1);
   %%ground to the right of the wall (with inclination)
   \ifgroundright

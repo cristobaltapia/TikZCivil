@@ -72,7 +72,7 @@
   },
   dim below/.style={to path={\pgfextra{
         \pgfinterruptpath
-        \draw[>=latex,|<->|] let 
+        \draw[>=latex,|<->|] let
         \p1=($(\tikztostart)!2mm!90:(\tikztotarget)$),
         \p2=($(\tikztotarget)!2mm!-90:(\tikztostart)$)
         in (\p1) -- (\p2) node[pos=.5,sloped,below]{#1};
@@ -91,6 +91,99 @@
     \global\let#1\pgfmathresult
 }
 
+%
+%The following code was taken from the TikZ-mec project:
+% https://gitorious.org/tikz-mec
+\pgfdeclaredecoration{mec@draw@straight@load@forces}{initial}{%
+  % \end{macrocode}
+  % The width of each decoration is equal to the path length (stored in \verb|\pgfdecoratedpathlength|) divided by the number of arrows. The number of arrows is calculated dividing the length of the path by the distance between the arrows (contained in the \texttt{force distance} key) and rounding the result to assure an integer number
+  % \begin{macrocode}
+  \state{initial}[width=\pgfdecoratedpathlength/%
+    round(\pgfdecoratedpathlength/\pgfkeysvalueof{/tikz/forces distance})]{%
+    % \end{macrocode}
+    % Loading parameters used to personalize the load appearance
+    % \begin{macrocode}
+    \pgf@xb=\pgfkeysvalueof{/tikz/load distance}
+    \pgf@xa=\pgfkeysvalueof{/tikz/forces length}
+    % \end{macrocode}
+    % \verb|\pgf@xa| gets the distance between the path and the beginning of the arrows
+    % \begin{macrocode}
+    \advance\pgf@xa by\pgf@xb
+    % \end{macrocode}
+    % Draw the arrow perpendicular to the path. No need to add an arrow tip (using, for example, \verb|\pgfsetarrows{}|) at this level. It will be added at higher level in the style definition (this allows customization at user level defining \texttt{>})
+    % \begin{macrocode}
+    \pgfpathmoveto{\pgfpoint{0pt}{\pgf@xa}}
+    \pgfpathlineto{\pgfpoint{0pt}{\pgf@xb}}
+    \pgfusepath{stroke}
+  }
+  \state{final}{%
+    % \end{macrocode}
+    % The last arrow is not drawed in the \texttt{initial} state, so it is needed to add it. Same operations as above, but starting from the last point of the path
+    % \begin{macrocode}
+    \pgf@xb=\pgfkeysvalueof{/tikz/load distance}
+    \pgf@xa=\pgfkeysvalueof{/tikz/forces length}
+    \advance\pgf@xa by\pgf@xb
+    \pgfpathmoveto{%
+    \pgfpointadd{\pgfpoint{0pt}{\pgf@xa}}{\pgfpointdecoratedpathlast}}
+    \pgfpathlineto{%
+    \pgfpointadd{\pgfpoint{0pt}{\pgf@xb}}{\pgfpointdecoratedpathlast}}
+    \pgfusepath{stroke}
+  }
+}
+% \end{macrocode}
+% Define a decoration that draws the box containing the arrows of a load on a straight path
+% \begin{macrocode}
+\pgfdeclaredecoration{mec@draw@straight@load@box}{initial}{%
+  % \end{macrocode}
+  % Here we use a fake width and draw only once (thanks to the \texttt{next state} option) the two paths (above and below the arrows)
+  % \begin{macrocode}
+  \state{initial}[width=1pt,next state=final]{
+    \pgf@xa=\pgfkeysvalueof{/tikz/load distance}
+    \pgf@xb=\pgfkeysvalueof{/tikz/forces length}
+    \advance\pgf@xb by\pgf@xa
+    % \end{macrocode}
+    % Draw the path far from the structure
+    % \begin{macrocode}
+    \pgfpathmoveto{\pgfpoint{0pt}{\pgf@xa}}
+    \pgfpathlineto{%
+    \pgfpointadd{\pgfpoint{0pt}{\pgf@xa}}{\pgfpointdecoratedpathlast}}%
+    % \end{macrocode}
+    % Draw the path near the structure
+    % \begin{macrocode}
+    \pgfpathmoveto{\pgfpoint{0pt}{\pgf@xb}}
+    \pgfpathlineto{%
+    \pgfpointadd{\pgfpoint{0pt}{\pgf@xb}}{\pgfpointdecoratedpathlast}}%
+    \pgfusepath{stroke}
+  }
+  \state{final}{%
+    \pgfpathmoveto{\pgfpointdecoratedpathlast}
+  }
+}
+
+\tikzset{load distance/.initial=10pt,
+  forces distance/.initial=10pt,
+  forces length/.initial=20pt,
+  total distance/.initial=30pt,
+  draw curved load/.style 2 args={%
+    total distance={\pgfkeysvalueof{/tikz/forces length}+%
+    \pgfkeysvalueof{/tikz/load distance}},%
+    postaction={->,decorate,decoration={mec@draw@curved@load@forces}},%
+    postaction={decorate,decoration=mec@draw@curved@load@box},%
+    postaction={decorate,decoration={markings,%
+        raise=\pgfkeysvalueof{/tikz/total distance},%
+  mark=at position #2 with \node #1;}}},
+  draw curved load/.default={[right]{$p$}}{0.999},
+  draw straight load/.style 2 args={%
+    total distance={\pgfkeysvalueof{/tikz/forces length}+%
+    \pgfkeysvalueof{/tikz/load distance}},%
+    postaction={-latex,decorate,decoration={mec@draw@straight@load@forces}},%
+    postaction={decorate,decoration=mec@draw@straight@load@box},%
+    postaction={decorate,decoration={markings,%
+        raise=\pgfkeysvalueof{/tikz/total distance},%
+  mark=at position #2 with \node #1;}}},
+  draw straight load/.default={[right]{$p$}}{0.999}
+}
+% \end{macrocode}
 %--------------- Read files ---------------------------------------------------%
 %The files where the commands are defined are included
 %------------------------------------------------------------------------------%

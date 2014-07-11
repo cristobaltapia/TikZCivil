@@ -145,8 +145,9 @@
     %Rotate if requested
     \pgftransformrotate{\supportAngle}
     \coordinate (k2) at ([shift={(-\supportWidth/2,0cm)}]k1) {};
-    \coordinate (k3) at ([shift={(\supportWidth/2,-\supportWidth/3)}]k1) {};
-    \filldraw[soil style] (k2) rectangle (k3);
+    \coordinate (k3) at ([shift={(\supportWidth/2,0cm)}]k1) {};
+    \supportLines{k2}{k3}{\supportWidth/3};
+    %\filldraw[soil style] (k2) rectangle (k3);
     \pgftransformrotate{-\supportAngle}
   \fi
   %If the type of the support is pinned
@@ -157,13 +158,12 @@
     \coordinate (k4) at ([shift={(-\supportWidth*1/3,-\supportWidth*1/3)}]k1) {};
     \coordinate (k5) at ([shift={(\supportWidth*1/3,-\supportWidth*1/3)}]k1) {};
     %Triangle is drawn
-    \draw[line normal] (k1) -- (k4) -- (k5) -- (k1);
+    \draw[thick] (k1) -- (k4) -- (k5) -- (k1);
     %This are te coordinates for the upper-left point of the soil-rectangle
     \coordinate (k6) at ([shift={(-\supportWidth/2,-\supportWidth*1/3)}]k1) {};
     %This are te coordinates for the upper-right point of the soil-rectangle
     \coordinate (k7) at ([shift={(\supportWidth/2,-\supportWidth*1/3)}]k1) {};
     %The rectangle for the soil is drawn
-    %\filldraw[soil style] (k7) rectangle (k6);
     \supportLines{k6}{k7}{\supportWidth/3};
     \pgftransformrotate{-\supportAngle}
   \fi
@@ -175,17 +175,18 @@
     \coordinate (k4) at ([shift={(-\supportWidth*1/3,-\supportWidth*1/3)}]k1) {};
     \coordinate (k5) at ([shift={(\supportWidth*1/3,-\supportWidth*1/3)}]k1) {};
     %Trianlge is drawn
-    \draw (k1) -- (k4) -- (k5) -- (k1);
+    \draw[thick] (k1) -- (k4) -- (k5) -- (k1);
     %Wheels are drawn
     \coordinate (k6) at ([shift={(0,-\supportWidth*1/3-\supportWidth/10)}]k1);
     \coordinate (k7) at ([shift={(-\supportWidth*1/5,-\supportWidth*1/3-\supportWidth/10)}]k1);
     \coordinate (k8) at ([shift={(\supportWidth*1/5,-\supportWidth*1/3-\supportWidth/10)}]k1);
     \foreach \center in {{(k6)}, {(k7)}, {(k8)}}
-      \draw \center circle (\supportWidth/10);
+      \draw[thick] \center circle (\supportWidth/10);
     %Coordinates for the soil under the wheels
     \coordinate (k9) at ([shift={(-\supportWidth/2,-\supportWidth/10)}]k6);
-    \coordinate (k10) at ([shift={(\supportWidth/2,-\supportWidth/3-\supportWidth/10)}]k6);
-    \filldraw[soil style] (k9) rectangle (k10);
+    \coordinate (k10) at ([shift={(\supportWidth/2,-\supportWidth/10)}]k6);
+    \supportLines{k9}{k10}{\supportWidth/3};
+    %\filldraw[soil style] (k9) rectangle (k10);
     \pgftransformrotate{-\supportAngle}
   \fi
   %If the type is fixed-sliding
@@ -203,16 +204,65 @@
     \coordinate (k9) at ([shift={(-\supportWidth*2/5,-\supportWidth*3/10)}]k1);
     \coordinate (k10) at ([shift={(\supportWidth*2/5,-\supportWidth*3/10)}]k1);
     \foreach \center in {{(k8)}, {(k9)}, {(k10)}}
-      \draw \center circle (\supportWidth/10);
+      \draw[thick] \center circle (\supportWidth/10);
     %Coordinates for the soil under the wheels
     \coordinate (k11) at ([shift={(0,-\supportWidth/5)}]k6);
-    \coordinate (k12) at ([shift={(0,-\supportWidth/5-\supportWidth/3)}]k7);
-    \filldraw[soil style] (k11) rectangle (k12);
+    \coordinate (k12) at ([shift={(0,-\supportWidth/5)}]k7);
+    \supportLines{k11}{k12}{\supportWidth/3};
+    %\filldraw[soil style] (k11) rectangle (k12);
     \pgftransformrotate{-\supportAngle}
   \fi
 }
 %End of the definition
 %
+%----------------- Definition of command \distLoad: ---------------------------%
+%Defines a command that draws a distributed load, give two points, a separation
+%and a size for the arrow.
+%------------------------------------------------------------------------------%
+%
+\newif\ifnarrows
+
+\pgfkeys{
+  /civil/distLoad/.is family, /civil/distLoad,
+  eq spacing/.is if = narrows,
+  default/.style = {
+    point a    = {0cm,0cm},
+    point b    = {2cm,0cm},
+    separation        = 0.5cm,
+    size       = 0.5cm,
+    n arrows   = 3,
+    eq spacing = true,
+  },
+  point a/.store in  = \posA,
+  point b/.store in  = \posB,
+  sep/.store in      = \sepArrow,
+  size/.store in     = \sizeArrow,
+  %TODO:
+  n arrows/.store in = \nArrows,
+}
+%--------Definition of the command begins-------------------------------------%
+\newcommand\distLoad[3][]{%
+  \pgfkeys{/civil/distLoad, default, #1,}%
+  %Position of point A
+  \coordinate (pA) at (#2) ;
+  %Position of point B
+  \coordinate (pB) at (#3) ;
+  \pgfextractangle{\surfaceAngle}{pA}{pB}
+  %\pgftransformrotate{\surfaceAngle}
+    \draw[thick] (pB) -- (pA);
+    \draw[thick, -latex] \let \p1 = ($(pA) - (pB)$),
+               \n2 = {veclen(\x1,\y1)};
+    \ifnarrows
+      \foreach \li in {0,1,...,\nArrows}{
+        \draw[thick,-latex] ([xshift=\n2/\nArrows*\li cm]pA) -- +(0,-\sizeArrow);
+      }
+    \else
+      \foreach \li in {0,1,...,\n2}{
+        \draw[thick,-latex] ([xshift=\li*\sepArrow]pA) -- +(0,-\sizeArrow);
+    \fi
+    }
+ % \pgftransformrotate{-\surfaceAngle}
+}
 %----------------- Definition of command \MassWithSpring: ---------------------%
 %Defines the drawing of a typical mass tied to a spring. Optionally it can also
 %have a damper.
