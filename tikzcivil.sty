@@ -59,6 +59,7 @@
     }
   }, decorate},
 }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Define style for the dimensions
 \tikzset{
   dim above/.style={to path={\pgfextra{
@@ -82,6 +83,7 @@
     }
   },
 }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Calculate angle between two coordinates
 % #1: name of the variable wher the value will be stored
 % #2: coordinate 1
@@ -92,6 +94,7 @@
     \global\let#1\pgfmathresult
 }
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %The following code was taken from the TikZ-mec project:
 % https://gitorious.org/tikz-mec
@@ -185,6 +188,67 @@
   draw straight load/.default={[right]{$p$}}{0.999}
 }
 % \end{macrocode}
+%
+%Definition of node shape for strain gauges
+%
+%
+\pgfdeclareshape{strain gauge}
+%
+% Draws a circle around the text
+%
+{
+  \inheritsavedanchors[from=circle]
+  \inheritanchorborder[from=circle]
+
+  \inheritanchor[from=circle]{center}
+  \inheritanchor[from=circle]{south}
+  \inheritanchor[from=circle]{west}
+  \inheritanchor[from=circle]{north}
+  \inheritanchor[from=circle]{east}
+  %
+  % Anchors
+  % 
+
+  %
+  % Background path
+  %
+  \backgroundpath{%
+    \pgfutil@tempdima=\radius%
+    \pgfmathsetlength{\pgf@xb}{\pgfkeysvalueof{/pgf/outer xsep}}%  
+    \pgfmathsetlength{\pgf@yb}{\pgfkeysvalueof{/pgf/outer ysep}}%  
+    \ifdim\pgf@xb<\pgf@yb%
+      \advance\pgfutil@tempdima by-\pgf@yb%
+    \else%
+      \advance\pgfutil@tempdima by-\pgf@xb%
+    \fi%
+
+    \pgfutil@tempdima=\radius%
+    \radius
+    \pgf@xa=\pgfutil@tempdima
+    \centerpoint
+    \pgf@xb=\pgf@x
+    \pgf@yb=\pgf@y
+    \advance\pgf@xb by0.707107\pgf@xa
+    \advance\pgf@yb by-0.707107\pgf@xa
+    \pgfpathmoveto{\centerpoint}
+    \pgfpathlineto{\pgfpoint{\pgf@xb}{\pgf@yb}}
+    %
+    \centerpoint
+    \pgf@xb=\pgf@x
+    \pgf@yb=\pgf@y
+    \advance\pgf@xb by-\pgf@xa
+    \pgfpathmoveto{\centerpoint}
+    \pgfpathlineto{\pgfpoint{\pgf@xb}{\pgf@yb}}
+    %
+    \centerpoint
+    \pgf@xb=\pgf@x
+    \pgf@yb=\pgf@y
+    \advance\pgf@yb by\pgf@xa
+    \pgfpathmoveto{\centerpoint}
+    \pgfpathlineto{\pgfpoint{\pgf@xb}{\pgf@yb}}
+  }
+}
+
 %--------------- Read files ---------------------------------------------------%
 %The files where the commands are defined are included
 %------------------------------------------------------------------------------%
