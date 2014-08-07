@@ -19,6 +19,12 @@
 \usepackage[font=small]{caption}
 %\setlength{\parindent}{1cm}
 \usepackage{tikz}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+\usetikzlibrary{shapes.multipart}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{shapes.misc}
+\usetikzlibrary{backgrounds,patterns}
 \usepackage{titlesec}
 \usepackage{floatrow}
 \floatsetup[table]{style=Plaintop, font=small}
@@ -39,6 +45,17 @@
 {5pc}{*2}{*2}[5pc]
 
 \begin{document}
+\tikzset{
+  every plot/.style={prefix=plots/pgf-},
+  shape example/.style={
+    color=black!30,
+    draw,
+    fill=yellow!30,
+    line width=.5cm,
+    inner xsep=2.5cm,
+    inner ysep=0.5cm}
+}
+
 \begin{titlepage}
   \title{Documentation for the use of the \emph{tikzcivil} package}
   \author{Cristóbal Tapia\\
@@ -455,5 +472,22 @@ Test test tes\\
 \end{tikzpicture}
   \end{lstlisting}
 \end{minipage}
+
+
+\begin{tikzpicture}
+  \node[name=s,shape=pinned support,shape example]
+  {Rectangle Callout\vrule width1pt height1cm};
+  \foreach \anchor/\placement in
+  {center/above, text/below,
+    south west/below, south east/below}
+  \draw[shift=(s.\anchor)] plot[mark=x] coordinates{(0,0)}
+  node[\placement] {\scriptsize\texttt{(s.\anchor)}};
+\end{tikzpicture}\\
+
+\begin{tikzpicture}
+  \node[shape=pinned support,thick] at (3,0) {};
+  \draw (3,0) -- (3,2);
+  \draw (3,0) -- (6,0);
+\end{tikzpicture}
 
 \end{document}
