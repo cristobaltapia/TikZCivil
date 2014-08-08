@@ -189,24 +189,81 @@
 }
 % \end{macrocode}
 %
-%Definition of node shape for strain gauges
-%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Definition of a linear strain gauge node shape
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 \pgfdeclareshape{strain gauge}
 %
 {
   \inheritsavedanchors[from=circle]
   \inheritanchorborder[from=circle]
+  %
+  % Anchors
+  %
+  \inheritanchor[from=circle]{center}
+  \inheritanchor[from=circle]{south}
+  \inheritanchor[from=circle]{north}
+  \anchor{east}{\centerpoint}
+  \anchor{west}{\centerpoint}
+  \anchor{south west}{
+    \centerpoint\advance\pgf@y by-0.5\radius
+  }
+  \anchor{south east}{
+    \centerpoint\advance\pgf@y by-0.5\radius
+  }
+  \anchor{north west}{
+    \centerpoint\advance\pgf@y by0.5\radius
+  }
+  \anchor{north east}{
+    \centerpoint\advance\pgf@y by0.5\radius
+  }
+  %
+  % Background path
+  %
+  \backgroundpath{%
+    \pgfutil@tempdima=\radius%
+    \pgfmathsetlength{\pgf@xb}{\pgfkeysvalueof{/pgf/outer xsep}}%
+    \pgfmathsetlength{\pgf@yb}{\pgfkeysvalueof{/pgf/outer ysep}}%
+    \ifdim\pgf@xb<\pgf@yb%
+      \advance\pgfutil@tempdima by-\pgf@yb%
+    \else%
+      \advance\pgfutil@tempdima by-\pgf@xb%
+    \fi%
 
+    \pgfutil@tempdima=\radius%
+    \radius
+    \pgf@xa=\pgfutil@tempdima
+    \centerpoint
+    \pgf@xb=\pgf@x
+    \pgf@yb=\pgf@y
+    \advance\pgf@yb by-\pgf@xa
+    \pgfpathmoveto{\pgfpoint{\pgf@xb}{\pgf@yb}}
+    \centerpoint
+    \pgf@xb=\pgf@x
+    \pgf@yb=\pgf@y
+    \advance\pgf@yb by\pgf@xa
+    \pgfpathlineto{\pgfpoint{\pgf@xb}{\pgf@yb}}
+  }
+}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Definition of node shape for triaxial strain gauges
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\pgfdeclareshape{strain gauge triaxial}
+%
+{
+  \inheritsavedanchors[from=circle]
+  \inheritanchorborder[from=circle]
+  %
+  % Anchors
+  %
   \inheritanchor[from=circle]{center}
   \inheritanchor[from=circle]{south}
   \inheritanchor[from=circle]{west}
   \inheritanchor[from=circle]{north}
   \inheritanchor[from=circle]{east}
-  %
-  % Anchors
-  %
-
   %
   % Background path
   %
